@@ -81,12 +81,52 @@ const Store = {
     if (btn) btn.textContent = t === "dark" ? "☀" : "☾";
   },
 
+  _readJsonArray(key) {
+    try {
+      const value = JSON.parse(localStorage.getItem(key));
+      return Array.isArray(value) ? value : [];
+    } catch {
+      return [];
+    }
+  },
+
+  _normalizeCart(raw) {
+    const map = new Map();
+    for (const item of raw) {
+      if (!item || typeof item.slug !== "string") continue;
+      if (!this.getProduct(item.slug)) continue;
+      const qty = Math.max(1, Number(item.qty) || 1);
+      map.set(item.slug, (map.get(item.slug) || 0) + qty);
+    }
+    return [...map.entries()].map(([slug, qty]) => ({ slug, qty }));
+  },
+
+  _normalizeFavs(raw) {
+    const seen = new Set();
+    const favs = [];
+    for (const slug of raw) {
+      if (typeof slug !== "string" || seen.has(slug)) continue;
+      if (!this.getProduct(slug)) continue;
+      seen.add(slug);
+      favs.push(slug);
+    }
+    return favs;
+  },
+
   /* ── Sepet ── */
   getCart() {
-    try { return JSON.parse(localStorage.getItem(this.KEYS.cart)) || []; }
-    catch { return []; }
+    const raw = this._readJsonArray(this.KEYS.cart);
+    const cart = this._normalizeCart(raw);
+    if (JSON.stringify(cart) !== JSON.stringify(raw)) {
+      localStorage.setItem(this.KEYS.cart, JSON.stringify(cart));
+    }
+    return cart;
   },
-  saveCart(c) { localStorage.setItem(this.KEYS.cart, JSON.stringify(c)); this.updateBadges(); },
+  saveCart(c) {
+    const cart = this._normalizeCart(Array.isArray(c) ? c : []);
+    localStorage.setItem(this.KEYS.cart, JSON.stringify(cart));
+    this.updateBadges();
+  },
 
   addToCart(slug, qty = 1) {
     const p = this.getProduct(slug);
@@ -125,8 +165,12 @@ const Store = {
 
   /* ── Favoriler ── */
   getFavs() {
-    try { return JSON.parse(localStorage.getItem(this.KEYS.favs)) || []; }
-    catch { return []; }
+    const raw = this._readJsonArray(this.KEYS.favs);
+    const favs = this._normalizeFavs(raw);
+    if (JSON.stringify(favs) !== JSON.stringify(raw)) {
+      localStorage.setItem(this.KEYS.favs, JSON.stringify(favs));
+    }
+    return favs;
   },
   isFav(slug) { return this.getFavs().includes(slug); },
   toggleFav(slug) {
@@ -390,8 +434,16 @@ const Store = {
   updateBadges() {
     const cb = document.getElementById("cartBadge");
     const fb = document.getElementById("favBadge");
-    if (cb) cb.textContent = this.cartCount();
-    if (fb) fb.textContent = this.getFavs().length;
+    const cartN = this.cartCount();
+    const favN = this.getFavs().length;
+    if (cb) {
+      cb.textContent = String(cartN);
+      cb.classList.toggle("is-zero", cartN === 0);
+    }
+    if (fb) {
+      fb.textContent = String(favN);
+      fb.classList.toggle("is-zero", favN === 0);
+    }
   },
 
   /* ── Toast / son satın alma ── */

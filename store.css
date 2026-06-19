@@ -65,6 +65,7 @@ header.nav .nav-inner{
   background:var(--accent);color:var(--accent-ink);font-size:10px;font-weight:700;
   border-radius:20px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);
 }
+.nav-badge.is-zero{display:none;}
 .lang-toggle,.theme-toggle{
   font-size:12px;font-weight:600;padding:7px 10px;border-radius:8px;
   background:var(--surface);border:1px solid var(--border);color:var(--text-dim);cursor:pointer;
