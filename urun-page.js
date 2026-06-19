@@ -5,11 +5,11 @@ function renderProductPage() {
   const product = slug ? Store.getProduct(slug) : null;
 
   if (!product) {
-    document.title = 'Ürün Bulunamadı — ExtasyStore';
+    document.title = t('seoNotFoundTitle');
     root.innerHTML = `
       <div class="not-found">
-        <h1>Ürün bulunamadı</h1>
-        <p>Aradığınız ilan mevcut değil veya kaldırılmış olabilir.</p>
+        <h1>${t('productNotFound')}</h1>
+        <p>${t('productNotFoundDesc')}</p>
         <a href="index.html#products" class="btn btn-primary">${t('goShop')} →</a>
       </div>`;
     return;
@@ -29,7 +29,7 @@ function renderProductPage() {
     : '';
 
   root.innerHTML = `
-    <nav class="breadcrumb" aria-label="Konum">
+    <nav class="breadcrumb" data-i18n-aria="breadcrumbLabel" aria-label="${t('breadcrumbLabel')}">
       <a href="index.html">${t('home')}</a><span>/</span>
       <a href="${Store.categoryUrl(product.cat)}">${t('products')}</a><span>/</span>
       <span>${product.name}</span>
@@ -53,7 +53,7 @@ function renderProductPage() {
           ${Store.timelineHtml()}
 
           <div class="price-box">
-            <span class="price-from">Fiyat</span>
+            <span class="price-from">${t('price')}</span>
             <div class="price-row">
               <span class="now" id="priceNow">${Store.formatPrice(product.price)}</span>
               ${product.was ? `<span class="was">${Store.formatPrice(product.was)}</span>` : ''}
@@ -85,7 +85,7 @@ function renderProductPage() {
         </div>
       </div>
 
-      <p class="long-desc">${product.longDesc}</p>
+      ${product.longDesc ? `<p class="long-desc">${product.longDesc}</p>` : ''}
       ${renderPorts(product.ports)}
       ${Store.productFaqHtml(product.faq)}
       <div id="relatedProducts"></div>
@@ -116,7 +116,7 @@ function renderProductPage() {
       msg.textContent = `${t('discount')}: %${res.percent} (${code.toUpperCase()})`;
     } else {
       msg.className = 'coupon-msg err';
-      msg.textContent = 'Geçersiz kupon kodu';
+      msg.textContent = t('invalidCoupon');
     }
   });
 }
@@ -127,13 +127,16 @@ function renderPorts(ports) {
   if (!active.length) return '';
   return `<div class="detail-ports">${active.map((port, i) => `
     <article class="port-card${port.full ? ' full' : ''}">
-      <span class="port-label">Port ${i + 1}</span>
+      <span class="port-label">${t('portLabel')} ${i + 1}</span>
       ${port.title ? `<h3 class="port-title">${port.title}</h3>` : ''}
       <div class="port-body">${port.text.split('\n').filter(l => l.trim()).map(l => `<p>${l}</p>`).join('')}</div>
     </article>`).join('')}</div>`;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  Store.init({ recentPurchases: true, activePage: 'product' });
-  renderProductPage();
-});
+  document.addEventListener('DOMContentLoaded', () => {
+    Store.init({ recentPurchases: true, activePage: 'product' });
+    renderProductPage();
+    window.onLangChange = function() {
+      renderProductPage();
+    };
+  });

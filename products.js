@@ -112,17 +112,18 @@ const products = [
     desc: "Yapay zekâ destekli komut dosyası oluşturma, kaynak dökümü ve olay araçlarına sahip gelişmiş FiveM Executor.",
     longDesc: "Ham Executor; AI destekli script oluşturma, kaynak dökümü ve gelişmiş olay araçlarıyla FiveM deneyiminizi bir üst seviyeye taşır. Hızlı menü, stabil performans ve geniş özellik seti.",
     ports: [
-      { title: "Port 1 — Buraya başlık yaz", text: "Buraya açıklama metnini yaz...", full: false },
-      { title: "Port 2 — Buraya başlık yaz", text: null, full: false },
-      { title: "Port 3 — Buraya başlık yaz", text: null, full: true },
-      { title: "Port 4 — Buraya başlık yaz", text: null, full: false }
+      { title: "Ürün Hakkında", text: "Ham Executor, yapay zeka destekli script oluşturma motoru ve gelişmiş kaynak döküm araçlarıyla FiveM deneyiminizi üst seviyeye taşır. Hızlı menü, düşük gecikme ve yüksek stabilite.", full: false },
+      { title: "Kurulum Adımları", text: "1. Satın alma sonrası lisans anahtarınızı alın\n2. İndirme linkinden son sürümü indirin\n3. Yönetici olarak çalıştırın ve anahtarı girin\n4. FiveM'i başlatın ve menüden aktive edin", full: false },
+      { title: "Önemli Notlar", text: "AI script oluşturucu, kaynak dökümü ve olay araçları yalnızca eğitim amaçlıdır.\nHer güncelleme öncesi eski sürümü kaldırmanız önerilir.", full: true },
+      { title: "Destek", text: null, full: false }
     ],
     features: ["AI script oluşturucu", "Kaynak döküm araçları", "Hızlı ve stabil menü", "7/24 destek"],
     price: 39.99,
     was: null,
-    img: "https://static.mysellauth.com/storage/images/797242.webp ",
+    img: "https://static.mysellauth.com/storage/images/797242.webp",
     imgWidth: 110,
     imgHeight: 110,
+    images: ["https://static.mysellauth.com/storage/images/797242.webp"],
     logo: null,
     logoWidth: 32,
     logoHeight: 32
@@ -141,6 +142,7 @@ const products = [
     img: "https://cdn.discordapp.com/attachments/1501791586822918205/1517229109241970860/bvp89zn.png?ex=6a358538&is=6a3433b8&hm=8c3fa0af49ca61dfcbe05ed7e0cec46b37d072d898f41958ed97aeb23900e7cd&",
     imgWidth: 90,
     imgHeight: 90,
+    images: ["https://cdn.discordapp.com/attachments/1501791586822918205/1517229109241970860/bvp89zn.png?ex=6a358538&is=6a3433b8&hm=8c3fa0af49ca61dfcbe05ed7e0cec46b37d072d898f41958ed97aeb23900e7cd&"],
     logo: null,
     logoWidth: 32,
     logoHeight: 32
@@ -159,6 +161,7 @@ const products = [
     img: "https://cdn.discordapp.com/attachments/1501791586822918205/1517229113188815048/sm17jsm.png?ex=6a358539&is=6a3433b9&hm=562b522bd59cc546ee805ef5bdba24dab2c98d10f8f2a645edc4ebf85ad413fe&",
     imgWidth: 90,
     imgHeight: 90,
+    images: ["https://cdn.discordapp.com/attachments/1501791586822918205/1517229113188815048/sm17jsm.png?ex=6a358539&is=6a3433b9&hm=562b522bd59cc546ee805ef5bdba24dab2c98d10f8f2a645edc4ebf85ad413fe&"],
     logo: null,
     logoWidth: 32,
     logoHeight: 32
@@ -177,6 +180,7 @@ const products = [
     img: "https://r.resimlink.com/FcUfSXPJo0iM.png",
     imgWidth: 90,
     imgHeight: 90,
+    images: ["https://r.resimlink.com/FcUfSXPJo0iM.png"],
     logo: null,
     logoWidth: 28,
     logoHeight: 28
@@ -195,6 +199,7 @@ const products = [
     img: "https://r.resimlink.com/weDTi.png",
     imgWidth: 90,
     imgHeight: 90,
+    images: ["https://r.resimlink.com/weDTi.png"],
     logo: null,
     logoWidth: 24,
     logoHeight: 24
@@ -205,7 +210,7 @@ const products = [
     cat: "c",
     catLabel: "Spoofers",
     badge: "best",
-    desc: "Kısa ürün açıklaması buraya gelecek.",
+    desc: "FiveM için gelişmiş HWID koruması ve gizlilik koruyucu.",
     longDesc: "RedEngine 5M Privacy Protector ile sistem kimliğinizi koruyun. Kolay kurulum ve güvenilir HWID koruması.",
     features: ["HWID koruması", "Kolay kurulum", "FiveM uyumlu", "Düzenli güncelleme"],
     price: 39.99,
@@ -213,6 +218,7 @@ const products = [
     img: "https://camo.githubusercontent.com/17885cb483c8892fb8aceeea3a77c7e3fbd605341b0f4b781aabddfceae00242/68747470733a2f2f7777772e6375737265762e636f6d2f706963732f797572696d6f642e636f6d5f36313536362e32353964376539612e77656270",
     imgWidth: 90,
     imgHeight: 90,
+    images: ["https://camo.githubusercontent.com/17885cb483c8892fb8aceeea3a77c7e3fbd605341b0f4b781aabddfceae00242/68747470733a2f2f7777772e6375737265762e636f6d2f706963732f797572696d6f642e636f6d5f36313536362e32353964376539612e77656270"],
     logo: "https://s3-eu-west-1.amazonaws.com/tpd/logos/66108cc9b0267b2d54b1057b/0x0.png",
     logoWidth: 32,
     logoHeight: 32
@@ -223,7 +229,7 @@ const products = [
     cat: "c",
     catLabel: "Spoofers",
     badge: null,
-    desc: "Kısa ürün açıklaması buraya gelecek.",
+    desc: "HWID koruması için hafif ve hızlı spoofer çözümü.",
     longDesc: "Ham Spoofer ile donanım kimliğinizi güvenle değiştirin. Ban sonrası hızlı geri dönüş için ideal.",
     features: ["Hızlı HWID reset", "Basit arayüz", "Güncel bypass", "Anında teslim"],
     price: 9.99,
@@ -231,6 +237,7 @@ const products = [
     img: "https://i.imgur.com/8RvN26G.png",
     imgWidth: 90,
     imgHeight: 90,
+    images: ["https://i.imgur.com/8RvN26G.png"],
     logo: "https://i.imgur.com/lrjvnzw.png",
     logoWidth: 32,
     logoHeight: 32
@@ -241,7 +248,7 @@ const products = [
     cat: "c",
     catLabel: "Spoofers",
     badge: null,
-    desc: "Kısa ürün açıklaması buraya gelecek.",
+    desc: "Gelişmiş koruma katmanları ve geniş oyun desteği sunan spoofer.",
     longDesc: "Spoofer Pro, gelişmiş koruma katmanları ve geniş oyun desteği sunar.",
     features: ["Çoklu oyun desteği", "Gelişmiş spoof", "Kolay kullanım", "Destek hattı"],
     price: 9.99,
@@ -249,6 +256,7 @@ const products = [
     img: "https://i.imgur.com/8RvN26G.png",
     imgWidth: 90,
     imgHeight: 90,
+    images: ["https://i.imgur.com/8RvN26G.png"],
     logo: "https://i.imgur.com/lrjvnzw.png",
     logoWidth: 32,
     logoHeight: 32
@@ -259,7 +267,7 @@ const products = [
     cat: "c",
     catLabel: "Spoofers",
     badge: null,
-    desc: "Kısa ürün açıklaması buraya gelecek.",
+    desc: "Bütçe dostu ve hafif HWID koruma çözümü.",
     longDesc: "Spoofer Lite, bütçe dostu ve hafif bir HWID koruma çözümüdür.",
     features: ["Uygun fiyat", "Hızlı kurulum", "Temel koruma", "Anında lisans"],
     inStock: false,
@@ -268,6 +276,7 @@ const products = [
     img: "https://i.imgur.com/8RvN26G.png",
     imgWidth: 90,
     imgHeight: 90,
+    images: ["https://i.imgur.com/8RvN26G.png"],
     logo: "https://i.imgur.com/lrjvnzw.png",
     logoWidth: 32,
     logoHeight: 32

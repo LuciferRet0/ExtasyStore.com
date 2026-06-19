@@ -1,6 +1,6 @@
 const LANG = {
   tr: {
-    products: "Ürünler", compare: "Karşılaştır", reviews: "Yorumlar", faq: "SSS",
+    products: "Ürünler", compare: "Karşılaştır", reviews: "Yorumlar", navReviews: "Yorumlar", faq: "SSS",
     search: "Ürün ara...", cart: "Sepet", favorites: "Favoriler", theme: "Tema",
     inStock: "Stokta", outOfStock: "Tükendi", addCart: "Sepete Ekle", buyNow: "Satın Al",
     related: "Benzer Ürünler", share: "Paylaş", copied: "Link kopyalandı!",
@@ -8,15 +8,93 @@ const LANG = {
     delivery: "Teslimat Süreci", step1: "Satın Al", step2: "Ödeme Onayı", step3: "Anahtar Teslimi",
     coupon: "Kupon kodu", apply: "Uygula", discount: "İndirim", total: "Toplam",
     emptyCart: "Sepetiniz boş", goShop: "Mağazaya Git", checkout: "Ödemeye Geç",
-    recentBuy: "az önce satın aldı", joinCommunity: "Topluluğa Katıl",
+    recentBuy: "az önce satın aldı", joinCommunity: "Topluluğa Katıl", joinNow: "Şimdi Katıl →",
     productCompare: "Ürün Karşılaştırma", selectCompare: "Karşılaştırmak için ürün seçin",
+    selectCompareHint: "Karşılaştırmak için ürün kartlarından ⇔ butonuna tıklayın (max 2).",
     admin: "Admin", export: "Dışa Aktar", import: "İçe Aktar", save: "Kaydet",
-    productFaq: "Ürün SSS", features: "Öne çıkan özellikler", backStore: "Mağazaya Dön",
+    productFaq: "Ürün SSS", features: "Öne çıkan özellikler", backStore: "← Mağazaya Dön",
     paymentSoon: "Ödeme sistemi (Shopier)", shopierInfo: "Shopier bağlantısı için SHOPIER-BAGLANTI.md dosyasına bakın.",
-    home: "Ana Sayfa", all: "Tümü", off: "indirim"
+    home: "Ana Sayfa", all: "Tümü", off: "indirim", price: "Fiyat", clear: "Temizle",
+    badgeNew: "YENİ", badgeBest: "ÇOK SATAN", badgeExpert: "EXPERT",
+    favHint: "♥ ile ürün ekleyin.", invalidCoupon: "Geçersiz kupon kodu",
+    productNotFound: "Ürün bulunamadı", productNotFoundDesc: "Aradığınız ilan mevcut değil veya kaldırılmış olabilir.",
+    subtotal: "Ara toplam", portLabel: "Port", breadcrumbLabel: "Konum",
+    login: "Giriş Yap", menuOpen: "Menüyü aç", systemsActive: "Sistemler Aktif",
+    seoTitle: "ExtasyStore — Dijital Ürün Mağazası",
+    seoDesc: "Dijital lisanslar anında teslim. FiveM, hesaplar, spoofers ve daha fazlası.",
+    seoCartTitle: "Sepet — ExtasyStore", seoCartDesc: "ExtasyStore sepetiniz",
+    seoProductTitle: "Ürün — ExtasyStore", seoNotFoundTitle: "Ürün Bulunamadı — ExtasyStore",
+    seoAdminTitle: "Admin — ExtasyStore",
+    shopierRedirect: "Shopier yönlendirmesi — SHOPIER-BAGLANTI.md dosyasındaki adımları tamamlayın.",
+    adminSubtitle: "İlanları düzenle — değişiklikler tarayıcıda saklanır (localStorage)",
+    adminNote: "Gerçek sunucuda products.js dosyasını güncellemek için JSON dışa aktarın. İçe aktarma tarayıcıya kaydeder.",
+    savedToast: "Kaydedildi (localStorage)", invalidJson: "Geçersiz JSON",
+    wasLabel: "was (indirim yoksa boş)", featuresLabel: "features (virgülle ayır)",
+    copyright: "© 2026 ExtasyStore. Tüm hakları saklıdır.",
+    catA: "Fivem Cheats", catB: "Accounts", catC: "Spoofers", catD: "Windows Lisans",
+    sortFeatured: "Öne Çıkanlar", sortNew: "En Yeni", sortAsc: "Fiyat ↑", sortDesc: "Fiyat ↓",
+    explore: "Keşfet →", productsUnit: "ürün",
+    heroEyebrow: "● 746+ aktif kullanıcı",
+    heroTitle: "Dijital lisanslar<br><em>anında</em> elinizde.",
+    heroSub: "Program, oyun, araç, şablon ve çeşitli dijital yazılım lisanslarını tek tıkla alın. Satın alma sonrası lisans anahtarınız anında teslim edilir, uzman destek her zaman yanınızda.",
+    viewProducts: "Ürünleri Gör →",
+    statUsers: "Aktif Kullanıcı", statUptime: "Çalışma Süresi", statDelivery: "Teslimat", statSupport: "Destek",
+    payCard: "KART", payPaypal: "PAYPAL", payWallet: "CÜZDAN", payCrypto: "KRİPTO", payTransfer: "HAVALE",
+    cardTag1: "DİJİTAL LİSANS", sampleProduct: "ÖRNEK ÜRÜN",
+    cardDelivery: "Satın alma sonrası anahtar otomatik olarak hesabına ve e-postana iletilir.",
+    cardActive: "● AKTİF",
+    kickerCatalog: "Katalog", categoriesTitle: "Kategoriler",
+    categoriesDesc: "Farklı alanlardaki dijital ürünleri tek çatı altında keşfedin.",
+    catDescA: "FiveM için en güncel, risksiz hile ve araçlar.",
+    catDescB: "Oyun ve yazılım için güvenli, hızlı teslim hesaplar.",
+    catDescC: "Sistem kimliğini gizle, engelleri kolayca aş!",
+    catDescD: "Orjinal Windows Pro, Home ve Office seri numaraları.",
+    catCountA: "3 ürün", catCountB: "3 ürün", catCountC: "2 ürün", catCountD: "5 ürün",
+    kickerStore: "Mağaza", productsDesc: "Tüm lisanslarımız ve hesaplarımız anında teslim, %100 çalışma garantili.",
+    kickerBeforeAfter: "Önce / Sonra", compareVisualTitle: "Farkı kendin gör",
+    compareVisualDesc: "Kaydırıcıyı sürükleyerek lisanslı ve lisanssız yazılım farkını keşfet.",
+    unlicensed: "Lisanssız", licensed: "Lisanslı", before: "Önce", after: "Sonra",
+    kickerCommunity: "Topluluk", reviewsTitle: "Kullanıcılar ne diyor",
+    reviewsDesc: "Her yorum doğrulanmış bir satın almaya bağlıdır.",
+    kickerWhy: "Neden Biz", whyTitle: "Neden ExtasyStore'u Seçmelisiniz?",
+    why1Title: "Anında Teslimat", why1Desc: "Satın alma sonrası saniyeler içinde lisans kodunuz ve hesap bilgileriniz hazır.",
+    why2Title: "Test Edildi", why2Desc: "Her ürün yayınlanmadan önce detaylıca test edilir, güvenle kullanılır.",
+    why3Title: "Gerçek Destek", why3Desc: "Bot değil, gerçek ekip ve hızlı cevaplar ile %100 memnuniyet.",
+    why4Title: "Düzenli Güncelleme", why4Desc: "Ürünlerimiz sürekli olarak güncellenir, her zaman en son versiyon elinizde.",
+    kickerSupport: "Destek", faqTitle: "Sıkça sorulan sorular",
+    ctaTitle: "Topluluğa katıl", ctaDesc: "Güncellemeler, destek ve özel fırsatlar sizleri bekliyor.",
+    ctaPerk1: "● Aktif topluluk", ctaPerk2: "● Doğrudan teknik destek", ctaPerk3: "● Özel kampanyalar",
+    footDesc: "Dijital lisanslar ve hesaplar için güvenilir kaynağınız. Anında teslimat, gerçek destek, düzenli güncellemeler. Kurumsal ve bireysel satışlar için profesyonel platform.",
+    footLinks: "Hızlı Bağlantılar", footLegal: "Yasal",
+    footHome: "Ana Sayfa", footTerms: "Kullanım Şartları", footPrivacy: "Gizlilik Politikası", footRefund: "İade Politikası",
+    faqs: [
+      { q: "Dijital teslimat nasıl çalışır?", a: "Satın alma onaylandıktan sonra ürün hesabına ve e-postana otomatik olarak gönderilir." },
+      { q: "Hangi ödeme yöntemleri kabul ediliyor?", a: "Kart, dijital cüzdan ve kripto para dahil birden fazla yöntemi destekliyoruz." },
+      { q: "Buradan satın almak güvenli mi?", a: "Tüm ödemeler şifrelenmiş, güvenilir sağlayıcılar üzerinden işlenir." },
+      { q: "Ürünüm çalışmazsa ne olur?", a: "Destek ekibimiz sorunu çözmek için seninle birlikte çalışır." },
+      { q: "İade alabilir miyim?", a: "İade koşulları ürün ve duruma göre değişir, iade politikamıza göz atabilirsin." },
+      { q: "Desteğe nasıl ulaşırım?", a: "Topluluk kanalımızdan veya destek formundan 7/24 ulaşabilirsin." }
+    ],
+    reviews: [
+      { name: "xNightRaven", item: "Tiago Private", text: "Executor temiz çalışıyor, günlerdir ban yok. Teslimat saniyeler içinde geldi." },
+      { name: "v4peGod_47", item: "Ham Executor", text: "AI script kısmı gerçekten işe yarıyor, menü düzgün ve hızlı açılıyor." },
+      { name: "pixel_dr1ft", item: "Eulen", text: "Premium fiyatına değer, stabilitesi piyasadaki birçok executordan daha iyi." },
+      { name: "ghostbyte99", item: "Fresh Rockstar", text: "Hesap sorunsuz giriş yaptı, bu fiyata fresh rockstar bulmak zor." },
+      { name: "z3roBan_", item: "Fresh Steam", text: "Steam hesabı anında geldi, mail bilgileri eksiksizdi. Ucuz ama iş görüyor." },
+      { name: "null_ptr_x", item: "Fresh Discord", text: "Discord hesabı doğrulanmış şekilde geldi, birkaç dakika içinde kullandım." },
+      { name: "lux3Run", item: "RedEngine 5M Privacy Protector", text: "Spoofer kurulumu kolaydı, HWID reset sonrası sorunsuz girdim." },
+      { name: "synapse.tr", item: "Ham Executor", text: "Kaynak dökümü ve olay araçlarını test ettim, beklediğimden stabil çalıştı." },
+      { name: "hexwave72", item: "Tiago Private", text: "Sıfır yakalanma iddiası abartı değil, private executor arayanlara tavsiye." },
+      { name: "coldstart_0x", item: "Fresh Rockstar", text: "Toplu aldım, hepsi aktifti. Otomatik teslimat gerçekten anında." },
+      { name: "rq_mainframe", item: "Eulen", text: "Uzun süredir duyduğum marka, buradan almak daha güvenli hissettirdi." },
+      { name: "darkpacket_", item: "RedEngine 5M Privacy Protector", text: "İndirimli fiyattan aldım, privacy protector beklentimi karşıladı." },
+      { name: "bytecrush3r", item: "Fresh Steam", text: "Fresh steam için şüpheliydim ama hesap çalışıyor, fiyat performans süper." },
+      { name: "neon_0verdrive", item: "Fresh Discord", text: "Token ve mail bilgisi düzgün geldi, destek de hızlı döndü." },
+      { name: "stack_overflowx", item: "Tiago Private", text: "Kurulum rehberi net, execte takılma veya crash yaşamadım." }
+    ]
   },
   en: {
-    products: "Products", compare: "Compare", reviews: "Reviews", faq: "FAQ",
+    products: "Products", compare: "Compare", reviews: "Reviews", navReviews: "Reviews", faq: "FAQ",
     search: "Search products...", cart: "Cart", favorites: "Favorites", theme: "Theme",
     inStock: "In Stock", outOfStock: "Sold Out", addCart: "Add to Cart", buyNow: "Buy Now",
     related: "Related Products", share: "Share", copied: "Link copied!",
@@ -24,16 +102,115 @@ const LANG = {
     delivery: "Delivery Process", step1: "Purchase", step2: "Payment Confirm", step3: "Key Delivery",
     coupon: "Coupon code", apply: "Apply", discount: "Discount", total: "Total",
     emptyCart: "Your cart is empty", goShop: "Go to Store", checkout: "Checkout",
-    recentBuy: "just purchased", joinCommunity: "Join Community",
+    recentBuy: "just purchased", joinCommunity: "Join Community", joinNow: "Join Now →",
     productCompare: "Product Comparison", selectCompare: "Select products to compare",
+    selectCompareHint: "Click the ⇔ button on product cards to compare (max 2).",
     admin: "Admin", export: "Export", import: "Import", save: "Save",
-    productFaq: "Product FAQ", features: "Key Features", backStore: "Back to Store",
+    productFaq: "Product FAQ", features: "Key Features", backStore: "← Back to Store",
     paymentSoon: "Payment (Shopier)", shopierInfo: "See SHOPIER-BAGLANTI.md for Shopier setup.",
-    home: "Home", all: "All", off: "off"
+    home: "Home", all: "All", off: "off", price: "Price", clear: "Clear",
+    badgeNew: "NEW", badgeBest: "BEST SELLER", badgeExpert: "EXPERT",
+    favHint: "Add products with ♥.", invalidCoupon: "Invalid coupon code",
+    productNotFound: "Product not found", productNotFoundDesc: "The listing you are looking for does not exist or may have been removed.",
+    subtotal: "Subtotal", portLabel: "Port", breadcrumbLabel: "Location",
+    login: "Log In", menuOpen: "Open menu", systemsActive: "Systems Online",
+    seoTitle: "ExtasyStore — Digital Product Store",
+    seoDesc: "Digital licenses delivered instantly. FiveM, accounts, spoofers and more.",
+    seoCartTitle: "Cart — ExtasyStore", seoCartDesc: "Your ExtasyStore cart",
+    seoProductTitle: "Product — ExtasyStore", seoNotFoundTitle: "Product Not Found — ExtasyStore",
+    seoAdminTitle: "Admin — ExtasyStore",
+    shopierRedirect: "Shopier redirect — complete the steps in SHOPIER-BAGLANTI.md.",
+    adminSubtitle: "Edit listings — changes are saved in the browser (localStorage)",
+    adminNote: "Export JSON to update products.js on a real server. Import saves to the browser.",
+    savedToast: "Saved (localStorage)", invalidJson: "Invalid JSON",
+    wasLabel: "was (leave empty if no discount)", featuresLabel: "features (separate by comma)",
+    copyright: "© 2026 ExtasyStore. All rights reserved.",
+    catA: "FiveM Cheats", catB: "Accounts", catC: "Spoofers", catD: "Windows License",
+    sortFeatured: "Featured", sortNew: "Newest", sortAsc: "Price ↑", sortDesc: "Price ↓",
+    explore: "Explore →", productsUnit: "products",
+    heroEyebrow: "● 746+ active users",
+    heroTitle: "Digital licenses<br><em>instantly</em> delivered.",
+    heroSub: "Get software, game, tool, template and digital licenses in one click. Your license key is delivered instantly after purchase, with expert support always available.",
+    viewProducts: "View Products →",
+    statUsers: "Active Users", statUptime: "Uptime", statDelivery: "Delivery", statSupport: "Support",
+    payCard: "CARD", payPaypal: "PAYPAL", payWallet: "WALLET", payCrypto: "CRYPTO", payTransfer: "BANK",
+    cardTag1: "DIGITAL LICENSE", sampleProduct: "SAMPLE PRODUCT",
+    cardDelivery: "After purchase, your key is automatically sent to your account and email.",
+    cardActive: "● ACTIVE",
+    kickerCatalog: "Catalog", categoriesTitle: "Categories",
+    categoriesDesc: "Discover digital products across different categories in one place.",
+    catDescA: "The latest, low-risk cheats and tools for FiveM.",
+    catDescB: "Secure game and software accounts with fast delivery.",
+    catDescC: "Hide your system identity and bypass restrictions easily!",
+    catDescD: "Original Windows Pro, Home and Office serial keys.",
+    catCountA: "3 products", catCountB: "3 products", catCountC: "2 products", catCountD: "5 products",
+    kickerStore: "Store", productsDesc: "All our licenses and accounts are delivered instantly with a 100% working guarantee.",
+    kickerBeforeAfter: "Before / After", compareVisualTitle: "See the difference yourself",
+    compareVisualDesc: "Drag the slider to explore the difference between licensed and unlicensed software.",
+    unlicensed: "Unlicensed", licensed: "Licensed", before: "Before", after: "After",
+    kickerCommunity: "Community", reviewsTitle: "What users say",
+    reviewsDesc: "Every review is linked to a verified purchase.",
+    kickerWhy: "Why Us", whyTitle: "Why Choose ExtasyStore?",
+    why1Title: "Instant Delivery", why1Desc: "Your license code and account details are ready within seconds after purchase.",
+    why2Title: "Tested", why2Desc: "Every product is thoroughly tested before release for safe use.",
+    why3Title: "Real Support", why3Desc: "Not bots — a real team with fast responses and 100% satisfaction.",
+    why4Title: "Regular Updates", why4Desc: "Our products are updated continuously so you always have the latest version.",
+    kickerSupport: "Support", faqTitle: "Frequently asked questions",
+    ctaTitle: "Join the community", ctaDesc: "Updates, support and exclusive deals await you.",
+    ctaPerk1: "● Active community", ctaPerk2: "● Direct technical support", ctaPerk3: "● Exclusive campaigns",
+    footDesc: "Your trusted source for digital licenses and accounts. Instant delivery, real support, regular updates. A professional platform for corporate and individual sales.",
+    footLinks: "Quick Links", footLegal: "Legal",
+    footHome: "Home", footTerms: "Terms of Service", footPrivacy: "Privacy Policy", footRefund: "Refund Policy",
+    faqs: [
+      { q: "How does digital delivery work?", a: "After your purchase is confirmed, the product is automatically sent to your account and email." },
+      { q: "Which payment methods are accepted?", a: "We support multiple methods including card, digital wallet and cryptocurrency." },
+      { q: "Is it safe to buy here?", a: "All payments are processed through encrypted, trusted providers." },
+      { q: "What if my product doesn't work?", a: "Our support team will work with you to resolve the issue." },
+      { q: "Can I get a refund?", a: "Refund terms vary by product and situation — see our refund policy." },
+      { q: "How do I reach support?", a: "Contact us 24/7 through our community channel or support form." }
+    ],
+    reviews: [
+      { name: "xNightRaven", item: "Tiago Private", text: "Executor runs clean, no ban for days. Delivery arrived in seconds." },
+      { name: "v4peGod_47", item: "Ham Executor", text: "The AI script feature actually works, menu opens fast and smooth." },
+      { name: "pixel_dr1ft", item: "Eulen", text: "Worth the premium price, more stable than many executors on the market." },
+      { name: "ghostbyte99", item: "Fresh Rockstar", text: "Account logged in without issues, hard to find fresh Rockstar at this price." },
+      { name: "z3roBan_", item: "Fresh Steam", text: "Steam account arrived instantly, email details were complete. Cheap but works." },
+      { name: "null_ptr_x", item: "Fresh Discord", text: "Discord account came verified, used it within minutes." },
+      { name: "lux3Run", item: "RedEngine 5M Privacy Protector", text: "Spoofer was easy to set up, got back in smoothly after HWID reset." },
+      { name: "synapse.tr", item: "Ham Executor", text: "Tested resource dump and event tools, ran more stable than expected." },
+      { name: "hexwave72", item: "Tiago Private", text: "Zero-detection claim is no exaggeration, recommended for private executor users." },
+      { name: "coldstart_0x", item: "Fresh Rockstar", text: "Bought in bulk, all active. Auto delivery really is instant." },
+      { name: "rq_mainframe", item: "Eulen", text: "Brand I've heard of for years, buying here felt safer." },
+      { name: "darkpacket_", item: "RedEngine 5M Privacy Protector", text: "Got it at a discount, privacy protector met my expectations." },
+      { name: "bytecrush3r", item: "Fresh Steam", text: "Was skeptical about fresh Steam but account works, great value." },
+      { name: "neon_0verdrive", item: "Fresh Discord", text: "Token and email info came correct, support replied quickly too." },
+      { name: "stack_overflowx", item: "Tiago Private", text: "Setup guide is clear, no freezing or crashes on the executor." }
+    ]
   }
 };
 
+const CAT_KEYS = { a: "catA", b: "catB", c: "catC", d: "catD" };
+
 function t(key) {
-  const lang = Store.getLang();
-  return (LANG[lang] && LANG[lang][key]) || LANG.tr[key] || key;
+  let lang = "tr";
+  try { lang = typeof Store !== "undefined" ? Store.getLang() : (localStorage.getItem("extasy_lang") || "tr"); } catch {}
+  const val = (LANG[lang] && LANG[lang][key]);
+  return val !== undefined ? val : (LANG.tr[key] !== undefined ? LANG.tr[key] : key);
+}
+
+function getCatLabel(cat) {
+  const key = CAT_KEYS[cat];
+  return key ? t(key) : cat;
+}
+
+function getLangFaqs() {
+  let lang = "tr";
+  try { lang = typeof Store !== "undefined" ? Store.getLang() : (localStorage.getItem("extasy_lang") || "tr"); } catch {}
+  return (LANG[lang] && LANG[lang].faqs) || LANG.tr.faqs;
+}
+
+function getLangReviews() {
+  let lang = "tr";
+  try { lang = typeof Store !== "undefined" ? Store.getLang() : (localStorage.getItem("extasy_lang") || "tr"); } catch {}
+  return (LANG[lang] && LANG[lang].reviews) || LANG.tr.reviews;
 }

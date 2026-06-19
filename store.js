@@ -33,13 +33,18 @@ const Store = {
 
   enrichProduct(p) {
     const img = (p.img || "").trim();
-    return {
+    let product = {
       ...p,
       inStock: p.inStock !== false,
       images: p.images && p.images.length ? p.images : (img ? [img] : []),
       faq: p.faq || [],
-      metaDesc: p.metaDesc || p.desc || ""
+      metaDesc: p.metaDesc || p.desc || "",
+      catLabel: typeof getCatLabel === "function" ? getCatLabel(p.cat) : p.catLabel
     };
+    if (typeof applyProductI18n === "function") {
+      product = applyProductI18n(product, this.getLang());
+    }
+    return product;
   },
 
   getProduct(slug) {
@@ -63,12 +68,26 @@ const Store = {
     document.documentElement.lang = l;
     document.querySelectorAll("[data-i18n]").forEach(el => {
       const key = el.getAttribute("data-i18n");
-      if (LANG[l] && LANG[l][key]) el.textContent = LANG[l][key];
+      if (LANG[l] && LANG[l][key] !== undefined) el.textContent = LANG[l][key];
+    });
+    document.querySelectorAll("[data-i18n-html]").forEach(el => {
+      const key = el.getAttribute("data-i18n-html");
+      if (LANG[l] && LANG[l][key] !== undefined) el.innerHTML = LANG[l][key];
     });
     document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
       const key = el.getAttribute("data-i18n-placeholder");
-      if (LANG[l] && LANG[l][key]) el.placeholder = LANG[l][key];
+      if (LANG[l] && LANG[l][key] !== undefined) el.placeholder = LANG[l][key];
     });
+    document.querySelectorAll("[data-i18n-aria]").forEach(el => {
+      const key = el.getAttribute("data-i18n-aria");
+      if (LANG[l] && LANG[l][key] !== undefined) el.setAttribute("aria-label", LANG[l][key]);
+    });
+    document.querySelectorAll("select[data-i18n-options] option[data-i18n]").forEach(opt => {
+      const key = opt.getAttribute("data-i18n");
+      if (LANG[l] && LANG[l][key] !== undefined) opt.textContent = LANG[l][key];
+    });
+    if (typeof window.onLangChange === "function") window.onLangChange(l);
+    this.updateCompareBar();
   },
 
   getTheme() { return localStorage.getItem(this.KEYS.theme) || "dark"; },
@@ -232,7 +251,7 @@ const Store = {
         }).join("")}
       </div>
       <div style="display:flex;gap:8px;">
-        <button class="btn btn-ghost" id="clearCompare">Temizle</button>
+        <button class="btn btn-ghost" id="clearCompare">${t("clear")}</button>
         <a href="index.html#product-compare" class="btn btn-primary">${t("compare")}</a>
       </div>
     `;
@@ -254,7 +273,7 @@ const Store = {
     const rows = [
       ["", ...items.map(p => `<a href="${productPageUrl(p.slug)}">${p.name}</a>`)],
       [t("products"), ...items.map(p => p.catLabel)],
-      ["Fiyat", ...items.map(p => this.formatPrice(p.price))],
+      [t("price"), ...items.map(p => this.formatPrice(p.price))],
       [t("discount"), ...items.map(p => this.discountPercent(p) ? `%${this.discountPercent(p)}` : "—")],
       [t("inStock"), ...items.map(p => p.inStock ? t("inStock") : t("outOfStock"))],
       [t("features"), ...items.map(p => (p.features || []).slice(0, 4).join(", "))]
@@ -354,7 +373,7 @@ const Store = {
     }
 
     if (STORE_CONFIG.shopier.enabled && STORE_CONFIG.shopier.apiKey !== "BURAYA-SHOPIER-API-KEY") {
-      alert("Shopier yönlendirmesi — SHOPIER-BAGLANTI.md dosyasındaki adımları tamamlayın.\n\nTutar: " + this.formatPrice(finalTotal));
+      alert(t("shopierRedirect") + "\n\n" + t("total") + ": " + this.formatPrice(finalTotal));
       return;
     }
     alert(
@@ -481,9 +500,9 @@ const Store = {
   /* ── Kart render yardımcıları ── */
   promoBadgeHtml(p) {
     let html = "";
-    if (p.badge === "new") html += `<span class="badge new">YENİ</span>`;
-    if (p.badge === "best") html += `<span class="badge best">ÇOK SATAN</span>`;
-    if (p.badge === "expert") html += `<span class="badge expert">EXPERT</span>`;
+    if (p.badge === "new") html += `<span class="badge new">${t("badgeNew")}</span>`;
+    if (p.badge === "best") html += `<span class="badge best">${t("badgeBest")}</span>`;
+    if (p.badge === "expert") html += `<span class="badge expert">${t("badgeExpert")}</span>`;
     const disc = this.discountPercent(p);
     if (disc) html += `<span class="badge discount">-${disc}%</span>`;
     return html;
@@ -530,7 +549,7 @@ const Store = {
           <a href="${productPageUrl(p.slug)}"><h4>${p.name}</h4></a>
           <p>${p.desc}</p>
           <div>
-            <span class="price-from">Fiyat</span>
+            <span class="price-from">${t("price")}</span>
             <div class="price-row">
               <span class="now">${this.formatPrice(p.price)}</span>
               ${p.was ? `<span class="was">${this.formatPrice(p.was)}</span>` : ""}

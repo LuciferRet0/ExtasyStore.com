@@ -37,6 +37,7 @@
 </main>
 <script src="store-config.js"></script>
 <script src="products.js"></script>
+<script src="products-i18n.js"></script>
 <script src="lang.js"></script>
 <script src="store.js"></script>
 <script>
@@ -74,7 +75,7 @@ function renderCart(){
     <div>${itemsHtml}</div>
     <div class="cart-summary">
       <h3 style="font-family:var(--display);margin-bottom:16px;">${t('total')}</h3>
-      <p style="color:var(--text-dim);margin-bottom:8px;">Ara toplam: ${Store.formatPrice(sub)}</p>
+      <p style="color:var(--text-dim);margin-bottom:8px;">${t('subtotal')}: ${Store.formatPrice(sub)}</p>
       ${coupon ? `<p style="color:#4CAF50;margin-bottom:8px;">${t('discount')} (${coupon.code}): -%${coupon.percent}</p>` : ''}
       <p style="font-size:24px;font-weight:700;font-family:var(--display);margin:16px 0;">${Store.formatPrice(total)}</p>
       <div class="coupon-row" style="margin-bottom:16px;">
@@ -98,7 +99,12 @@ function renderCart(){
 }
 document.addEventListener('DOMContentLoaded', () => {
   Store.init({ recentPurchases: false });
+  document.title = t('seoCartTitle');
   renderCart();
+  window.onLangChange = function() {
+    document.title = t('seoCartTitle');
+    renderCart();
+  };
 });
 </script>
 </body>
