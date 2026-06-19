@@ -19,6 +19,7 @@ const Store = {
     if (options.recentPurchases) this.startRecentPurchases();
     if (options.discordLinks !== false) this.bindDiscordLinks();
     this.handleCategoryFromUrl();
+    window.addEventListener("hashchange", () => this.handleCategoryFromUrl());
     this.updateBadges();
   },
 
