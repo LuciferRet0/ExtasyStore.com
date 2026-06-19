@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sepet — ExtasyStore</title>
+<meta name="description" content="ExtasyStore sepetiniz">
+<link rel="stylesheet" href="store.css">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0A0A0A;--surface:#1A1A1F;--surface-2:#252530;--border:rgba(255,255,255,0.09);--border-soft:rgba(255,255,255,0.05);--text:#F2F1ED;--text-dim:#9B9DA6;--text-faint:#5E6068;--accent:#FF8C00;--accent-ink:#0A0A0A;--radius:14px;--display:'Space Grotesk',sans-serif;--body:'Inter',sans-serif;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:var(--body);}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(11,12,14,0.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--border-soft);}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:72px;}
+  .logo{font-family:var(--display);font-weight:700;font-size:19px;color:inherit;text-decoration:none;}
+  .btn{font-weight:600;font-size:14px;border:none;border-radius:9px;padding:11px 20px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none;}
+  .btn-primary{background:var(--accent);color:var(--accent-ink);}
+  .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border);}
+  h1{font-family:var(--display);font-size:32px;padding:32px 0 8px;}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav-shell">
+    <div class="nav-inner">
+    <a href="Prototip 2.1.html" class="logo">ExtasyStore</a>
+    <div class="nav-right"></div>
+    </div>
+    <div class="nav-tools" id="navTools"></div>
+  </div>
+</header>
+<main class="wrap">
+  <h1 data-i18n="cart">Sepet</h1>
+  <div class="cart-layout" id="cartRoot"></div>
+</main>
+<script src="store-config.js"></script>
+<script src="products.js"></script>
+<script src="lang.js"></script>
+<script src="store.js"></script>
+<script>
+function renderCart(){
+  const root = document.getElementById('cartRoot');
+  const cart = Store.getCart();
+  if(!cart.length){
+    root.innerHTML = `<p style="color:var(--text-dim);padding:40px 0;">${t('emptyCart')}</p><a href="Prototip 2.1.html#products" class="btn btn-primary">${t('goShop')}</a>`;
+    return;
+  }
+  let sub = 0;
+  const itemsHtml = cart.map(item => {
+    const p = Store.getProduct(item.slug);
+    if(!p) return '';
+    sub += p.price * item.qty;
+    return `
+      <div class="cart-item">
+        <img src="${(p.img||'').trim()}" alt="${p.name}" />
+        <div style="flex:1;">
+          <h4 style="font-family:var(--display);margin-bottom:6px;"><a href="${productPageUrl(p.slug)}">${p.name}</a></h4>
+          <p style="font-size:13px;color:var(--text-dim);">${Store.formatPrice(p.price)} × ${item.qty}</p>
+          <div class="qty-control" style="margin-top:10px;">
+            <button type="button" data-qty="${p.slug}" data-d="-1">−</button>
+            <span>${item.qty}</span>
+            <button type="button" data-qty="${p.slug}" data-d="1">+</button>
+            <button type="button" class="btn btn-ghost" style="padding:6px 10px;margin-left:8px;font-size:12px;" data-rm="${p.slug}">✕</button>
+          </div>
+        </div>
+        <strong>${Store.formatPrice(p.price * item.qty)}</strong>
+      </div>`;
+  }).join('');
+  const coupon = Store.getCoupon();
+  const total = Store.discountedTotal(sub);
+  root.innerHTML = `
+    <div>${itemsHtml}</div>
+    <div class="cart-summary">
+      <h3 style="font-family:var(--display);margin-bottom:16px;">${t('total')}</h3>
+      <p style="color:var(--text-dim);margin-bottom:8px;">Ara toplam: ${Store.formatPrice(sub)}</p>
+      ${coupon ? `<p style="color:#4CAF50;margin-bottom:8px;">${t('discount')} (${coupon.code}): -%${coupon.percent}</p>` : ''}
+      <p style="font-size:24px;font-weight:700;font-family:var(--display);margin:16px 0;">${Store.formatPrice(total)}</p>
+      <div class="coupon-row" style="margin-bottom:16px;">
+        <input type="text" id="cartCoupon" placeholder="${t('coupon')}" />
+        <button type="button" class="btn btn-ghost" id="cartCouponBtn">${t('apply')}</button>
+      </div>
+      <button type="button" class="btn btn-primary" style="width:100%;justify-content:center;" id="checkoutBtn">${t('checkout')}</button>
+    </div>`;
+  root.querySelectorAll('[data-qty]').forEach(btn => {
+    btn.onclick = () => {
+      const slug = btn.dataset.qty;
+      const d = parseInt(btn.dataset.d, 10);
+      const item = Store.getCart().find(x => x.slug === slug);
+      Store.updateCartQty(slug, (item?.qty || 0) + d);
+      renderCart();
+    };
+  });
+  root.querySelectorAll('[data-rm]').forEach(btn => btn.onclick = () => { Store.removeFromCart(btn.dataset.rm); renderCart(); });
+  document.getElementById('checkoutBtn').onclick = () => Store.checkout(cart);
+  document.getElementById('cartCouponBtn').onclick = () => { Store.applyCoupon(document.getElementById('cartCoupon').value); renderCart(); };
+}
+document.addEventListener('DOMContentLoaded', () => {
+  Store.init({ recentPurchases: false });
+  renderCart();
+});
+</script>
+</body>
+</html>

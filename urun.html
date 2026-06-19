@@ -1,0 +1,354 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════════════════╗
+  ║  urun.html — TEKİL İLAN / ÜRÜN DETAY SAYFASI (PROTOTİP)                ║
+  ╠══════════════════════════════════════════════════════════════════════════╣
+  ║                                                                          ║
+  ║  DOSYA HARİTASI (neyin nerede olduğu)                                   ║
+  ║  ─────────────────────────────────────                                   ║
+  ║  Satır ~1-50    → Bu açıklama bloğu (dosya rehberi)                     ║
+  ║  <head>         → Sayfa başlığı, fontlar, TÜM stiller (CSS)             ║
+  ║  <header>       → Üst menü (logo + "Mağazaya Dön" butonu)               ║
+  ║  <main>         → Boş bırakılır; JavaScript içeriği buraya yazar        ║
+  ║  <footer>       → Alt telif satırı                                      ║
+  ║  products.js    → Tüm ilan verileri (isim, fiyat, görsel vb.)           ║
+  ║  <script>       → URL'den ilanı bulur, sayfayı oluşturur                ║
+  ║                                                                          ║
+  ║  NASIL ÇALIŞIR?                                                          ║
+  ║  ───────────────                                                         ║
+  ║  Her ilanın kendine ait adresi vardır:                                   ║
+  ║    urun.html?slug=tiago-private                                          ║
+  ║    urun.html?slug=ham-executor                                           ║
+  ║    urun.html?slug=fresh-rockstar                                         ║
+  ║                                                                          ║
+  ║  "slug" = ilanın benzersiz kimliği. products.js içinde tanımlıdır.       ║
+  ║  Ana sayfadaki "Satın Al" butonu otomatik olarak doğru slug'a gider.     ║
+  ║                                                                          ║
+  ║  YENİ İLAN SAYFASI NASIL AÇILIR? (3 adım)                                ║
+  ║  ─────────────────────────────────────────                               ║
+  ║  1) ilan-sablonu.js dosyasındaki boş şablonu kopyala                     ║
+  ║  2) products.js → products dizisinin sonuna yapıştır, alanları doldur    ║
+  ║  3) Tarayıcıda test et: urun.html?slug=YENİ-SLUG-ADIN                   ║
+  ║                                                                          ║
+  ║  NOT: urun.html dosyasını kopyalaman GEREKMEZ.                           ║
+  ║  Tek şablon tüm ilanları gösterir; veri products.js'ten gelir.           ║
+  ║                                                                          ║
+  ║  MEVCUT İLAN SAYFASINI NASIL DÜZENLERSİN?                                ║
+  ║  ─────────────────────────────────────────                               ║
+  ║  • İsim, fiyat, açıklama, görsel  → products.js içindeki ilgili kayıt   ║
+  ║  • Sayfa düzeni / kutular / renk  → bu dosyadaki <style> bölümü         ║
+  ║  • Açıklama portları (Port 1-4)    → products.js → ports dizisi          ║
+  ║  • Satın Al butonu davranışı      → alttaki <script> içinde buyBtn      ║
+  ║  • Üst menü / footer              → bu dosyadaki <header> ve <footer>   ║
+  ║                                                                          ║
+  ╚══════════════════════════════════════════════════════════════════════════╝
+-->
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Sekme başlığı — JS çalışınca ürün adıyla güncellenir -->
+<title>Ürün — ExtasyStore</title>
+
+<!-- Google Fonts: ana sayfa ile aynı fontlar -->
+<link rel="stylesheet" href="store.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  /* ================================================================
+     BÖLÜM 1 — RENK VE TİPOGRAFİ DEĞİŞKENLERİ
+     Site genelindeki renkleri buradan değiştirirsin.
+     Ana sayfa (Prototip 2.1.html) ile aynı tutulmuştur.
+     ================================================================ */
+  :root{
+    --bg:#0A0A0A;
+    --surface:#1A1A1F;
+    --surface-2:#252530;
+    --border:rgba(255,255,255,0.09);
+    --border-soft:rgba(255,255,255,0.05);
+    --text:#F2F1ED;
+    --text-dim:#9B9DA6;
+    --text-faint:#5E6068;
+    --accent:#FF8C00;
+    --accent-ink:#0A0A0A;
+    --accent-dim:rgba(255,140,0,0.10);
+    --tag-violet:#4B3DB8;
+    --tag-amber:#FF8C00;
+    --radius:14px;
+    --radius-sm:8px;
+    --maxw:1180px;
+    --display:'Space Grotesk',sans-serif;
+    --body:'Inter',sans-serif;
+    --mono:'JetBrains Mono',monospace;
+  }
+
+  /* ================================================================
+     BÖLÜM 2 — GENEL SAYFA AYARLARI
+     ================================================================ */
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--body);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(200,255,77,0.05), transparent 40%),
+      radial-gradient(circle at 88% 20%, rgba(140,123,255,0.06), transparent 45%);
+  }
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;cursor:pointer;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+  ::selection{background:var(--accent);color:var(--accent-ink);}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px;}
+
+  /* ================================================================
+     BÖLÜM 3 — ÜST MENÜ (header.nav)
+     Logo ve "Mağazaya Dön" butonu burada.
+     ================================================================ */
+  header.nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(11,12,14,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border-soft);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:auto;min-height:48px;}
+  .logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:19px;}
+  .logo-mark{width:30px;height:30px;border-radius:8px;object-fit:cover;}
+  .nav-right{display:flex;align-items:center;gap:14px;}
+
+  /* Buton stilleri — Satın Al, Mağazaya Dön vb. hepsi bunları kullanır */
+  .btn{
+    font-weight:600;font-size:14px;border:none;border-radius:9px;
+    padding:11px 20px;display:inline-flex;align-items:center;gap:8px;
+    transition:transform .15s, opacity .15s;
+  }
+  .btn:active{transform:scale(0.97);}
+  .btn-primary{background:var(--accent);color:var(--accent-ink);}
+  .btn-primary:hover{opacity:0.88;}
+  .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border);}
+  .btn-ghost:hover{border-color:rgba(255,255,255,0.25);}
+
+  /* ================================================================
+     BÖLÜM 4 — BREADCRUMB (Ana Sayfa / Ürünler / Ürün adı)
+     JS tarafından otomatik doldurulur.
+     ================================================================ */
+  .breadcrumb{
+    padding:28px 0 8px;
+    font-family:var(--mono);font-size:12px;color:var(--text-faint);
+    display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  }
+  .breadcrumb a{color:var(--text-dim);}
+  .breadcrumb a:hover{color:var(--accent);}
+
+  /* ================================================================
+     BÖLÜM 5 — ÜRÜN DETAY DÜZENİ (iki sütunlu grid)
+     Sol: görsel kutusu (.product-visual)
+     Sağ: başlık, fiyat, özellikler (.product-info)
+     ================================================================ */
+  .product-page{padding:24px 0 80px;}
+  .product-layout{
+    display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;
+  }
+
+  /* Sol taraf — büyük ürün görseli, etiket (YENİ/ÇOK SATAN), köşe logosu */
+  .product-visual{
+    background:var(--surface);border:1px solid var(--border-soft);border-radius:20px;
+    padding:40px;position:relative;min-height:360px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .badge{
+    position:absolute;top:16px;left:16px;font-family:var(--mono);font-size:10px;letter-spacing:0.5px;
+    padding:4px 8px;border-radius:5px;font-weight:600;
+  }
+  .card-top-badges .badge,
+  .card-stock-badge .badge,
+  .product-detail-badges .badge{
+    position:static;top:auto;left:auto;
+  }
+  .badge.new{background:var(--tag-violet);color:#0B0C0E;}      /* badge: "new"     → YENİ */
+  .badge.best{background:var(--tag-amber);color:#0B0C0E;}     /* badge: "best"    → ÇOK SATAN */
+  .badge.expert{background:var(--accent);color:var(--accent-ink);} /* badge: "expert" → EXPERT */
+  .product-visual img.main{
+    max-width:220px;max-height:220px;border-radius:12px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.4);
+  }
+  .product-visual img.logo-corner{
+    position:absolute;right:16px;bottom:16px;border-radius:8px;
+    border:1.5px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);
+    object-fit:cover;
+  }
+
+  /* Sağ taraf — kategori etiketi, başlık, kısa açıklama */
+  .product-info{display:flex;flex-direction:column;gap:18px;}
+  .cat-tag{
+    display:inline-flex;align-self:flex-start;
+    font-family:var(--mono);font-size:11px;color:var(--accent);
+    background:var(--accent-dim);border:1px solid rgba(255,140,0,0.25);
+    border-radius:30px;padding:5px 12px;
+  }
+  h1.product-title{
+    font-family:var(--display);font-size:clamp(28px,4vw,40px);
+    font-weight:700;line-height:1.1;letter-spacing:-0.3px;
+  }
+  .product-desc{font-size:15px;color:var(--text-dim);max-width:520px;}
+
+  /* Fiyat kutusu — price, was (eski fiyat), Satın Al butonu burada */
+  .price-box{
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius);padding:22px;display:flex;flex-direction:column;gap:14px;
+  }
+  .price-from{font-size:10.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.5px;}
+  .price-row{display:flex;align-items:baseline;gap:10px;}
+  .price-row .now{font-family:var(--display);font-weight:700;font-size:32px;}
+  .price-row .was{font-size:16px;color:var(--text-faint);text-decoration:line-through;}
+  .delivery-note{
+    font-size:13px;color:var(--text-dim);
+    display:flex;align-items:center;gap:8px;
+  }
+  .delivery-note span{color:var(--accent);}
+
+  /* Özellikler listesi — products.js → features dizisinden gelir */
+  .features{
+    background:var(--surface);border:1px solid var(--border-soft);
+    border-radius:var(--radius);padding:22px;
+  }
+  .features h3{font-family:var(--display);font-size:16px;margin-bottom:14px;}
+  .features ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+  .features li{
+    font-size:14px;color:var(--text-dim);
+    display:flex;align-items:flex-start;gap:10px;
+  }
+  .features li::before{
+    content:"●";color:var(--accent);font-size:10px;margin-top:4px;flex:none;
+  }
+
+  /* Uzun açıklama — products.js → longDesc alanından gelir */
+  .long-desc{
+    margin-top:8px;padding-top:28px;border-top:1px solid var(--border-soft);
+    font-size:14.5px;color:var(--text-dim);max-width:720px;line-height:1.65;
+  }
+
+  /* ================================================================
+     BÖLÜM 5b — AÇIKLAMA PORTLARI (products.js → ports dizisi)
+     Her port bir kutu: başlık + serbest metin.
+     text boş/null ise o port sayfada görünmez.
+     ================================================================ */
+  .detail-ports{
+    margin-top:36px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+  }
+  .port-card{
+    background:var(--surface);
+    border:1px solid var(--border-soft);
+    border-radius:var(--radius);
+    padding:22px 24px;
+  }
+  .port-card.full{grid-column:1 / -1;} /* full:true → tek satırda tam genişlik */
+  .port-label{
+    font-family:var(--mono);
+    font-size:10.5px;
+    color:var(--accent);
+    letter-spacing:0.8px;
+    text-transform:uppercase;
+    margin-bottom:8px;
+    display:block;
+  }
+  .port-title{
+    font-family:var(--display);
+    font-size:17px;
+    font-weight:600;
+    margin-bottom:12px;
+  }
+  .port-body{
+    font-size:14px;
+    color:var(--text-dim);
+    line-height:1.65;
+  }
+  .port-body p{margin-bottom:8px;}
+  .port-body p:last-child{margin-bottom:0;}
+  .port-body ul{
+    margin:8px 0 0 18px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+
+  /* ================================================================
+     BÖLÜM 6 — HATA SAYFASI (slug bulunamazsa gösterilir)
+     Örn: urun.html?slug=olmayan-ilan
+     ================================================================ */
+  .not-found{
+    text-align:center;padding:120px 24px;
+  }
+  .not-found h1{font-family:var(--display);font-size:32px;margin-bottom:12px;}
+  .not-found p{color:var(--text-dim);margin-bottom:24px;}
+
+  /* ================================================================
+     BÖLÜM 7 — ALT BİLGİ (footer)
+     ================================================================ */
+  footer{border-top:1px solid var(--border-soft);padding:32px 0;margin-top:40px;}
+  .foot-bottom{font-size:12.5px;color:var(--text-faint);text-align:center;}
+
+  /* ================================================================
+     BÖLÜM 8 — MOBİL UYUM
+     900px altında iki sütun tek sütuna düşer
+     ================================================================ */
+  @media (max-width:900px){
+    .product-layout{grid-template-columns:1fr;gap:32px;}
+    .detail-ports{grid-template-columns:1fr;}
+    .port-card.full{grid-column:auto;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SABİT ÜST MENÜ
+     Logo tıklanınca ana sayfaya gider.
+     "Mağazaya Dön" → doğrudan ürün listesine (#products)
+     ═══════════════════════════════════════════════════════════════ -->
+<header class="nav">
+  <div class="wrap nav-shell">
+    <div class="nav-inner">
+    <a href="Prototip 2.1.html" class="logo">
+      <img src="https://cdn.discordapp.com/attachments/1501791586822918205/1515327298633728140/sksbrqv.webp?ex=6a353185&is=6a33e005&hm=85f3569d9b701e004ae6544812da7b46665e96fc74d8eeecfa2c87e008dc59ef" alt="ExtasyStore" class="logo-mark" />
+      ExtasyStore
+    </a>
+    <div class="nav-right">
+      <a href="Prototip 2.1.html#products" class="btn btn-ghost" data-i18n="backStore">← Mağazaya Dön</a>
+    </div>
+    </div>
+    <div class="nav-tools" id="navTools"></div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ANA İÇERİK ALANI — BOŞ BIRAK
+     JavaScript (#pageRoot) buraya ilanın tüm HTML'ini yazar.
+     Elle HTML yazmana gerek yok; veri products.js'ten gelir.
+     ═══════════════════════════════════════════════════════════════ -->
+<main class="wrap" id="pageRoot"></main>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ALT BİLGİ
+     ═══════════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="wrap foot-bottom">© 2026 ExtasyStore. Tüm hakları saklıdır.</div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     VERİ KAYNAĞI
+     Tüm ilan bilgileri products.js dosyasında.
+     Yeni ilan eklemek veya mevcut ilanı düzenlemek için ORAYI aç.
+     ═══════════════════════════════════════════════════════════════ -->
+<script src="store-config.js"></script>
+<script src="products.js"></script>
+<script src="lang.js"></script>
+<script src="store.js"></script>
+<script src="urun-page.js"></script>
+</body>
+</html>

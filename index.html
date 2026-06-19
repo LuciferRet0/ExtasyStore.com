@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ExtasyStore — Dijital Ürün Mağazası</title>
+<meta name="description" content="ExtasyStore — Dijital lisanslar ve hesaplar. Anında teslimat, güvenli ödeme, 7/24 destek.">
+<meta property="og:title" content="ExtasyStore — Dijital Ürün Mağazası">
+<meta property="og:description" content="Dijital lisanslar anında elinizde. FiveM, hesaplar, spoofers ve daha fazlası.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="store.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0A0A;
+    --surface:#1A1A1F;
+    --surface-2:#252530;
+    --border:rgba(255,255,255,0.09);
+    --border-soft:rgba(255,255,255,0.05);
+    --text:#F2F1ED;
+    --text-dim:#9B9DA6;
+    --text-faint:#5E6068;
+    --accent:#FF8C00;
+    --accent-ink:#0A0A0A;
+    --accent-dim:rgba(255,140,0,0.10);
+    --tag-violet:#4B3DB8;
+    --tag-amber:#FF8C00;
+    --radius:14px;
+    --radius-sm:8px;
+    --maxw:1180px;
+    --display:'Space Grotesk',sans-serif;
+    --body:'Inter',sans-serif;
+    --mono:'JetBrains Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--body);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{display:block;}
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;cursor:pointer;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+  ::selection{background:var(--accent);color:var(--accent-ink);}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px;}
+
+  /* background texture */
+  body{
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(200,255,77,0.05), transparent 40%),
+      radial-gradient(circle at 88% 20%, rgba(140,123,255,0.06), transparent 45%);
+  }
+
+  /* ---------- NAV ---------- */
+  header.nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(11,12,14,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border-soft);
+  }
+  .nav-inner{
+    display:flex;align-items:center;justify-content:space-between;
+    height:auto;min-height:48px;gap:16px;
+  }
+  .logo{
+    display:flex;align-items:center;gap:10px;
+    font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:0.5px;
+  }
+  .logo-mark{
+    width:30px;height:30px;border-radius:8px;
+    background:var(--accent);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--accent-ink);font-weight:700;font-size:19px;
+  }
+  nav.links{display:flex;gap:32px;align-items:center;}
+  nav.links a{font-size:14.5px;color:var(--text-dim);font-weight:500;transition:color .15s;}
+  nav.links a:hover{color:var(--text);}
+  .nav-right{display:flex;align-items:center;gap:14px;}
+  .status-pill{
+    display:flex;align-items:center;gap:7px;
+    font-family:var(--mono);font-size:11.5px;color:var(--text-dim);
+    border:1px solid var(--border);border-radius:30px;padding:6px 12px 6px 10px;
+  }
+  .status-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--accent-dim);}
+  .btn{
+    font-weight:600;font-size:14px;border:none;border-radius:9px;
+    padding:11px 20px;display:inline-flex;align-items:center;gap:8px;
+    transition:transform .15s, opacity .15s;
+  }
+  .btn:active{transform:scale(0.97);}
+  .btn-primary{background:var(--accent);color:var(--accent-ink);}
+  .btn-primary:hover{opacity:0.88;}
+  .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border);}
+  .btn-ghost:hover{border-color:rgba(255,255,255,0.25);}
+  .menu-toggle{display:none;background:none;border:none;color:var(--text);}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:88px 0 64px;position:relative;overflow:hidden;}
+  .hero-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:56px;align-items:center;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--mono);font-size:12px;color:var(--accent);
+    background:var(--accent-dim);border:1px solid rgba(200,255,77,0.25);
+    border-radius:30px;padding:6px 14px;margin-bottom:22px;
+  }
+  h1.hero-title{
+    font-family:var(--display);font-weight:700;
+    font-size:clamp(34px,5vw,58px);line-height:1.05;letter-spacing:-0.5px;
+    margin-bottom:20px;
+  }
+  h1.hero-title em{color:var(--accent);font-style:normal;}
+  .hero-sub{font-size:16.5px;color:var(--text-dim);max-width:480px;margin-bottom:32px;}
+  .hero-cta{display:flex;gap:14px;margin-bottom:44px;flex-wrap:wrap;}
+  .stat-row{display:flex;gap:36px;margin-bottom:36px;flex-wrap:wrap;}
+  .stat b{display:block;font-family:var(--display);font-size:26px;font-weight:700;}
+  .stat span{font-size:12.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.5px;}
+  .pay-row{display:flex;flex-wrap:wrap;gap:8px;}
+  .pay-chip{
+    font-family:var(--mono);font-size:11px;letter-spacing:0.5px;color:var(--text-faint);
+    border:1px solid var(--border-soft);border-radius:6px;padding:5px 9px;
+  }
+
+  /* signature: license card */
+  .id-card{
+    position:relative;background:linear-gradient(155deg,var(--surface-2),var(--surface));
+    border:1px solid var(--border);border-radius:20px;padding:28px;
+    box-shadow:0 30px 60px -30px rgba(0,0,0,0.6);
+  }
+  .id-card::before{
+    content:"";position:absolute;inset:0;border-radius:20px;padding:1px;
+    background:linear-gradient(120deg, rgba(200,255,77,0.4), transparent 40%, transparent 60%, rgba(140,123,255,0.35));
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;
+    pointer-events:none;
+  }
+  .id-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:26px;}
+  .id-card-top .tag{font-family:var(--mono);font-size:11px;color:var(--text-faint);letter-spacing:1px;}
+  .corner{position:absolute;width:16px;height:16px;border:1.5px solid rgba(255,255,255,0.18);}
+  .corner.tl{top:10px;left:10px;border-right:none;border-bottom:none;}
+  .corner.tr{top:10px;right:10px;border-left:none;border-bottom:none;}
+  .corner.bl{bottom:10px;left:10px;border-right:none;border-top:none;}
+  .corner.br{bottom:10px;right:10px;border-left:none;border-top:none;}
+  .id-product-name{font-family:var(--display);font-weight:600;font-size:22px;margin-bottom:6px;}
+  .id-meta{display:flex;justify-content:space-between;align-items:flex-end;margin-top:30px;}
+  .id-serial{font-family:var(--mono);font-size:11px;color:var(--text-faint);}
+  .id-status{
+    font-family:var(--mono);font-size:11px;color:var(--accent);
+    display:flex;align-items:center;gap:6px;
+  }
+  .scan-line{
+    position:absolute;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent,var(--accent),transparent);
+    animation:scan 3.4s linear infinite;opacity:0.7;
+  }
+  @keyframes scan{0%{top:8%;}50%{top:88%;}100%{top:8%;}}
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section{padding:84px 0;}
+  .section-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:40px;gap:24px;flex-wrap:wrap;}
+  .kicker{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;display:block;}
+  h2.section-title{font-family:var(--display);font-size:clamp(26px,3.4vw,38px);font-weight:600;letter-spacing:-0.3px;}
+  .section-desc{color:var(--text-dim);font-size:15px;max-width:420px;}
+
+  /* ---------- CATEGORIES ---------- */
+  .cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .cat-card{
+    background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--radius);
+    padding:26px;transition:border-color .2s, transform .2s;
+  }
+  .cat-card:hover{border-color:rgba(200,255,77,0.3);transform:translateY(-3px);}
+  .cat-icon{
+    width:42px;height:42px;border-radius:10px;background:var(--accent-dim);
+    display:flex;align-items:center;justify-content:center;margin-bottom:18px;color:var(--accent);
+  }
+  .cat-card .count{font-family:var(--mono);font-size:11.5px;color:var(--text-faint);margin-bottom:8px;display:block;}
+  .cat-card h3{font-family:var(--display);font-size:18px;font-weight:600;margin-bottom:8px;}
+  .cat-card p{font-size:13.5px;color:var(--text-dim);margin-bottom:18px;}
+  .cat-link{font-size:13.5px;font-weight:600;color:var(--accent);display:inline-flex;align-items:center;gap:5px;}
+
+  /* ---------- PRODUCT FILTER ---------- */
+  .filter-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:14px;}
+  .pills{display:flex;gap:8px;flex-wrap:wrap;}
+  .pill{
+    font-size:13px;font-weight:500;color:var(--text-dim);
+    border:1px solid var(--border);border-radius:30px;padding:7px 15px;background:transparent;
+    transition:all .15s;
+  }
+  .pill.active{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);}
+  .pill:hover:not(.active){border-color:rgba(255,255,255,0.25);color:var(--text);}
+  select.sort{
+    background:var(--surface);color:var(--text-dim);border:1px solid var(--border);
+    border-radius:8px;padding:8px 12px;font-size:13px;font-family:inherit;
+  }
+  .product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  .product-card{
+    background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--radius);
+    overflow:hidden;display:flex;flex-direction:column;transition:transform .2s, border-color .2s;
+  }
+  .product-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,0.18);}
+  .product-thumb{
+    height:120px;position:relative;
+    background:linear-gradient(135deg,var(--surface-2),var(--bg));
+    display:flex;align-items:center;justify-content:center;color:var(--text-faint);
+  }
+  .badge{
+    position:absolute;top:10px;left:10px;font-family:var(--mono);font-size:10px;letter-spacing:0.5px;
+    padding:4px 8px;border-radius:5px;font-weight:600;
+  }
+  /* Çoklu etiket kutusu içinde absolute iptal — store.css */
+  .card-top-badges .badge,
+  .card-stock-badge .badge,
+  .product-detail-badges .badge{
+    position:static;top:auto;left:auto;
+  }
+  .badge.new{background:var(--tag-violet);color:#0B0C0E;}
+  .badge.best{background:var(--tag-amber);color:#0B0C0E;}
+  .badge.expert{background:var(--accent);color:var(--accent-ink);}
+  .product-body{padding:16px;display:flex;flex-direction:column;gap:8px;flex:1;}
+  .product-body h4{font-family:var(--display);font-size:15px;font-weight:600;}
+  .product-body p{font-size:12.5px;color:var(--text-faint);flex:1;}
+  .price-row{display:flex;align-items:baseline;gap:8px;margin-top:6px;}
+  .price-row .now{font-family:var(--display);font-weight:700;font-size:17px;}
+  .price-row .was{font-size:13px;color:var(--text-faint);text-decoration:line-through;}
+  .price-from{font-size:10.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.5px;}
+
+  /* ---------- COMPARE ---------- */
+  .compare-wrap{
+    position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);
+    aspect-ratio:16/7;background:var(--surface);
+  }
+  .compare-layer{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;color:var(--text-faint);letter-spacing:1px;}
+  .compare-after{background:linear-gradient(135deg,#1d2a14,#0B0C0E);color:var(--accent);}
+  .compare-before{background:linear-gradient(135deg,#241a14,var(--bg));}
+  .compare-after-clip{position:absolute;inset:0;overflow:hidden;}
+  .compare-handle{
+    position:absolute;top:0;bottom:0;width:3px;background:var(--accent);left:50%;
+    cursor:ew-resize;
+  }
+  .compare-handle::after{
+    content:"⇔";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:36px;height:36px;background:var(--accent);color:var(--accent-ink);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-size:14px;
+  }
+  .compare-label{
+    position:absolute;bottom:16px;font-family:var(--mono);font-size:11px;
+    background:rgba(0,0,0,0.5);padding:5px 10px;border-radius:6px;
+  }
+  .compare-label.l{left:16px;}
+  .compare-label.r{right:16px;}
+
+  /* ---------- TESTIMONIALS ---------- */
+  .marquee{overflow:hidden;position:relative;mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);}
+  .marquee-track{display:flex;gap:14px;width:max-content;animation:scroll-l 38s linear infinite;}
+  .marquee-track.rev{animation:scroll-r 42s linear infinite;margin-top:14px;}
+  @keyframes scroll-l{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  @keyframes scroll-r{from{transform:translateX(-50%);}to{transform:translateX(0);}}
+  .review-card{
+    width:260px;flex:none;background:var(--surface);border:1px solid var(--border-soft);
+    border-radius:var(--radius-sm);padding:18px;
+  }
+  .review-stars{color:var(--accent);font-size:13px;margin-bottom:10px;letter-spacing:2px;}
+  .review-card p{font-size:13.5px;color:var(--text-dim);margin-bottom:14px;}
+  .review-who{display:flex;align-items:center;gap:10px;}
+  .avatar{width:28px;height:28px;border-radius:50%;background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-size:11px;font-family:var(--mono);color:var(--text-faint);}
+  .review-who .name{font-size:12.5px;font-weight:600;}
+  .review-who .item{font-size:11px;color:var(--text-faint);}
+
+  /* ---------- WHY US ---------- */
+  .why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  .why-card{padding:8px 0;border-top:1px solid var(--border-soft);padding-top:22px;}
+  .why-icon{width:38px;height:38px;border-radius:9px;background:var(--surface-2);display:flex;align-items:center;justify-content:center;color:var(--accent);margin-bottom:16px;}
+  .why-card h3{font-family:var(--display);font-size:16px;font-weight:600;margin-bottom:8px;}
+  .why-card p{font-size:13.5px;color:var(--text-dim);}
+
+  /* ---------- FAQ ---------- */
+  .faq-list{max-width:760px;}
+  .faq-item{border-bottom:1px solid var(--border-soft);}
+  .faq-q{
+    width:100%;text-align:left;background:none;border:none;color:var(--text);
+    padding:20px 0;display:flex;justify-content:space-between;align-items:center;
+    font-size:15.5px;font-weight:500;font-family:inherit;
+  }
+  .faq-q .chev{transition:transform .2s;color:var(--text-faint);flex:none;margin-left:16px;}
+  .faq-item.open .faq-q .chev{transform:rotate(45deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .25s ease;}
+  .faq-a-inner{padding:0 0 20px;color:var(--text-dim);font-size:14px;max-width:600px;}
+
+  /* ---------- CTA BAND ---------- */
+  .cta-band{
+    background:linear-gradient(135deg,var(--surface-2),var(--surface));
+    border:1px solid var(--border);border-radius:24px;
+    padding:54px;display:flex;justify-content:space-between;align-items:center;gap:32px;flex-wrap:wrap;
+  }
+  .cta-band h2{font-family:var(--display);font-size:clamp(24px,3vw,32px);margin-bottom:10px;}
+  .cta-band p{color:var(--text-dim);font-size:14.5px;max-width:420px;}
+  .cta-perks{display:flex;gap:28px;margin-top:18px;flex-wrap:wrap;}
+  .cta-perks span{font-size:12.5px;color:var(--text-faint);display:flex;align-items:center;gap:6px;}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--border-soft);padding:64px 0 32px;}
+  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;margin-bottom:48px;}
+  .footer-grid h4{font-size:13px;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:16px;}
+  .footer-grid ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+  .footer-grid ul a{font-size:14px;color:var(--text-dim);}
+  .footer-grid ul a:hover{color:var(--text);}
+  .foot-desc{font-size:13.5px;color:var(--text-faint);max-width:340px;margin-top:14px;}
+  .foot-bottom{
+    display:flex;justify-content:space-between;border-top:1px solid var(--border-soft);
+    padding-top:24px;font-size:12.5px;color:var(--text-faint);flex-wrap:wrap;gap:10px;
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:980px){
+    nav.links{display:none;}
+    .menu-toggle{display:block;}
+    .hero-grid{grid-template-columns:1fr;}
+    .id-card{max-width:420px;}
+    .cat-grid{grid-template-columns:repeat(2,1fr);}
+    .product-grid{grid-template-columns:repeat(2,1fr);}
+    .why-grid{grid-template-columns:repeat(2,1fr);}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:560px){
+    .cat-grid,.product-grid,.why-grid{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr;}
+    .stat-row{gap:22px;}
+    .cta-band{padding:36px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .marquee-track, .scan-line{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-shell">
+    <div class="nav-inner">
+    <div class="logo">
+      <img src="https://cdn.discordapp.com/attachments/1501791586822918205/1515327298633728140/sksbrqv.webp?ex=6a353185&is=6a33e005&hm=85f3569d9b701e004ae6544812da7b46665e96fc74d8eeecfa2c87e008dc59ef" alt="ExtasyStore Logo" class="logo-mark" style="width:30px;height:30px;border-radius:8px;object-fit:cover;background:#FF8C00;" />
+      ExtasyStore
+    </div>
+    <nav class="links">
+      <a href="#products">Ürünler</a>
+      <a href="#compare">Karşılaştır</a>
+      <a href="#reviews">Yorumlar</a>
+      <a href="#faq">SSS</a>
+    </nav>
+    <div class="nav-right">
+      <span class="status-pill"><span class="status-dot"></span>Sistemler Aktif</span>
+      <button class="btn btn-ghost">Giriş Yap</button>
+      <button class="menu-toggle" aria-label="Menüyü aç">☰</button>
+    </div>
+    </div>
+    <div class="nav-tools" id="navTools"></div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">● 746+ aktif kullanıcı</span>
+      <h1 class="hero-title">Dijital lisanslar<br><em>anında</em> elinizde.</h1>
+      <p class="hero-sub">Program, oyun, araç, şablon ve çeşitli dijital yazılım lisanslarını tek tıkla alın. Satın alma sonrası lisans anahtarınız anında teslim edilir, uzman destek her zaman yanınızda.</p>
+      <div class="hero-cta">
+        <a href="#products" class="btn btn-primary">Ürünleri Gör →</a>
+        <a href="https://discord.gg/7E5pbp4yWz" target="_blank" rel="noopener" class="btn btn-ghost btn-discord" data-discord data-i18n="joinCommunity">Topluluğa Katıl</a>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><b>746+</b><span>Aktif Kullanıcı</span></div>
+        <div class="stat"><b>99.9%</b><span>Çalışma Süresi</span></div>
+        <div class="stat"><b>&lt;30sn</b><span>Teslimat</span></div>
+        <div class="stat"><b>7/24</b><span>Destek</span></div>
+      </div>
+      <div class="pay-row">
+        <span class="pay-chip">KART</span>
+        <span class="pay-chip">PAYPAL</span>
+        <span class="pay-chip">CÜZDAN</span>
+        <span class="pay-chip">KRİPTO</span>
+        <span class="pay-chip">HAVALE</span>
+      </div>
+    </div>
+
+    <div class="id-card" style="display:flex;flex-direction:column;align-items:center;">
+      <div class="corner tl"></div><div class="corner tr"></div>
+      <div class="corner bl"></div><div class="corner br"></div>
+      <div class="scan-line"></div>
+      <div class="id-card-top" style="width:100%;justify-content:space-between;">
+        <span class="tag">DİJİTAL LİSANS</span>
+        <span class="tag">v2.6</span>
+      </div>
+      <img src="https://cdn.discordapp.com/attachments/1501791586822918205/1515327298633728140/sksbrqv.webp?ex=6a353185&is=6a33e005&hm=85f3569d9b701e004ae6544812da7b46665e96fc74d8eeecfa2c87e008dc59ef" alt="ExtasyStore Card Logo" style="width:60px;height:60px;border-radius:14px;margin:16px 0 6px;object-fit:cover;" />
+      <span class="price-from" style="margin-bottom:4px;">ÖRNEK ÜRÜN</span>
+      <div class="id-product-name" style="text-align:center;">[Ham Spoofer]</div>
+      <img src="https://cdn.discordapp.com/attachments/1501791586822918205/1515333111993471076/f1s9rx6.png?ex=6a3536ef&is=6a33e56f&hm=0cd1b93935709eec7eded650b46040bc3c7915c94019a7616d42bec58fe69f3d" alt="Ürün Temsili" style="width:100%;max-width:220px;border-radius:10px;margin:10px auto;" />
+      <p style="font-size:13px;color:var(--text-dim);max-width:280px;text-align:center;">Satın alma sonrası anahtar otomatik olarak hesabına ve e-postana iletilir.</p>
+      <div class="id-meta" style="width:100%;">
+        <span class="id-serial">SN · 25B7-BKDV-A5NHN</span>
+        <span class="id-status">● AKTİF</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="categories">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="kicker">Katalog</span>
+        <h2 class="section-title">Kategoriler</h2>
+      </div>
+      <p class="section-desc">Farklı alanlardaki dijital ürünleri tek çatı altında keşfedin.</p>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-card">
+        <div class="cat-icon" style="background:#222;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/FiveM-Logo.png" alt="FiveM Cheats" style="width:32px;height:32px;object-fit:contain;" />
+        </div>
+        <span class="count">3 ürün</span>
+        <h3>[Fivem Cheats]</h3>
+        <p>FiveM için en güncel, risksiz hile ve araçlar.</p>
+        <a class="cat-link" href="#products?cat=a">Keşfet →</a>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon" style="background:#252530;">
+          <img src="https://r.resimlink.com/pijm9KbXgkc.png" alt="Accounts" style="width:32px;height:32px;object-fit:contain;" />
+        </div>
+        <span class="count">3 ürün</span>
+        <h3>[Accounts]</h3>
+        <p>Oyun ve yazılım için güvenli, hızlı teslim hesaplar.</p>
+        <a class="cat-link" href="#products?cat=b">Keşfet →</a>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon" style="background:#393956;">
+          <img src="https://r.resimlink.com/6UKoI.png" alt="Spoofers" style="width:52px;height:52px;object-fit:contain;" />
+        </div>
+        <span class="count">2 ürün</span>
+        <h3>[Spoofers]</h3>
+        <p>Sistem kimliğini gizle, engelleri kolayca aş!</p>
+        <a class="cat-link" href="#products?cat=c">Keşfet →</a>
+      </div>
+      <!-- Burada yeni kategoriler için örnek port -->
+      <div class="cat-card">
+        <div class="cat-icon" style="background:#222;">
+          <img src="https://r.resimlink.com/xatyAf6LD2Iq.png" alt="Windows Lisansları" style="width:32px;height:32px;object-fit:contain;" />
+        </div>
+        <span class="count">5 ürün</span>
+        <h3>[Windows Lisans]</h3>
+        <p>Orjinal Windows Pro, Home ve Office seri numaraları.</p>
+        <a class="cat-link" href="#products?cat=d">Keşfet →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="products">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="kicker">Mağaza</span>
+        <h2 class="section-title">Ürünler</h2>
+      </div>
+      <p class="section-desc">Tüm lisanslarımız ve hesaplarımız anında teslim, %100 çalışma garantili.</p>
+    </div>
+    <div class="filter-row">
+      <div class="pills" id="filterPills">
+        <button class="pill active" data-cat="all">Tümü</button>
+        <button class="pill" data-cat="a">Fivem Cheats</button>
+        <button class="pill" data-cat="b">Accounts</button>
+        <button class="pill" data-cat="c">Spoofers</button>
+        <button class="pill" data-cat="d">Windows Lisans</button>
+      </div>
+      <select class="sort" id="sortSelect">
+        <option value="featured">Öne Çıkanlar</option>
+        <option value="new">En Yeni</option>
+        <option value="asc">Fiyat ↑</option>
+        <option value="desc">Fiyat ↓</option>
+      </select>
+    </div>
+    <div class="product-grid" id="productGrid"><!-- JS ile doldurulur --></div>
+  </div>
+</section>
+
+<section class="section" id="favorites">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="kicker">♥</span>
+        <h2 class="section-title" data-i18n="favorites">Favoriler</h2>
+      </div>
+    </div>
+    <div class="product-grid" id="favoritesGrid"></div>
+  </div>
+</section>
+
+<section class="section" id="product-compare">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="kicker">⇔</span>
+        <h2 class="section-title" data-i18n="productCompare">Ürün Karşılaştırma</h2>
+      </div>
+      <p class="section-desc" data-i18n="selectCompare">Karşılaştırmak için ürün kartlarından ⇔ butonuna tıklayın (max 2).</p>
+    </div>
+    <div id="productCompareTable"></div>
+  </div>
+</section>
+
+<section class="section" id="compare">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="kicker">Önce / Sonra</span>
+        <h2 class="section-title">Farkı kendin gör</h2>
+      </div>
+      <p class="section-desc">Kaydırıcıyı sürükleyerek lisanslı ve lisanssız yazılım farkını keşfet.</p>
+    </div>
+    <div class="compare-wrap" id="compareWrap">
+      <!-- Örnek görsellerle önce/sonra karşılaştırma bağlantı portu -->
+      <div class="compare-layer compare-before" style="background:#19191d;">
+        <img src="https://i.imgur.com/I1Q9VLC.png" alt="Önce" style="height:100%;width:100%;object-fit:cover;opacity:0.85;">
+        <span style="position:absolute;left:16px;bottom:14px;background:rgba(0,0,0,0.7);color:#fff;padding:5px 12px;border-radius:7px;font-size:13px;">Lisanssız</span>
+      </div>
+      <div class="compare-after-clip" id="afterClip" style="width:50%;">
+        <div class="compare-layer compare-after" style="width:100vw;max-width:none;position:absolute;inset:0;background:#23233f;">
+          <img src="https://i.imgur.com/nA38l5n.png" alt="Sonra" style="height:100%;width:100%;object-fit:cover;opacity:0.90;">
+          <span style="position:absolute;right:16px;bottom:14px;background:rgba(255,140,0,0.85);color:#181818;padding:5px 14px;border-radius:7px;font-size:13px;">Lisanslı</span>
+        </div>
+      </div>
+      <div class="compare-handle" id="compareHandle" style="left:50%;"></div>
+      <span class="compare-label l">Önce</span>
+      <span class="compare-label r">Sonra</span>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="reviews">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="kicker">Topluluk</span>
+        <h2 class="section-title">Kullanıcılar ne diyor</h2>
+      </div>
+      <p class="section-desc">Her yorum doğrulanmış bir satın almaya bağlıdır.</p>
+    </div>
+  </div>
+  <div class="marquee">
+    <div class="marquee-track" id="trackA"></div>
+  </div>
+  <div class="marquee">
+    <div class="marquee-track rev" id="trackB"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="kicker">Neden Biz</span>
+        <h2 class="section-title">Neden ExtasyStore'u Seçmelisiniz?</h2>
+      </div>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">
+          <img src="https://r.resimlink.com/pFYhVzD9.png" alt="Hızlı Teslimat" style="width:28px;height:28px;object-fit:contain;">
+        </div>
+        <h3>Anında Teslimat</h3>
+        <p>Satın alma sonrası saniyeler içinde lisans kodunuz ve hesap bilgileriniz hazır.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">
+          <img src="https://r.resimlink.com/TnsEB.png" alt="Test Edildi" style="width:35px;height:35px;object-fit:contain;">
+        </div>
+        <h3>Test Edildi</h3>
+        <p>Her ürün yayınlanmadan önce detaylıca test edilir, güvenle kullanılır.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">
+          <img src="https://r.resimlink.com/Wn19ymTHZrE.png" alt="Destek" style="width:28px;height:28px;object-fit:contain;">
+        </div>
+        <h3>Gerçek Destek</h3>
+        <p>Bot değil, gerçek ekip ve hızlı cevaplar ile %100 memnuniyet.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">
+          <img src="https://r.resimlink.com/VAa_n.png" alt="Güncelleme" style="width:28px;height:28px;object-fit:contain;">
+        </div>
+        <h3>Düzenli Güncelleme</h3>
+        <p>Ürünlerimiz sürekli olarak güncellenir, her zaman en son versiyon elinizde.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="kicker">Destek</span>
+        <h2 class="section-title">Sıkça sorulan sorular</h2>
+      </div>
+    </div>
+    <div class="faq-list" id="faqList"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="cta-band">
+      <div>
+        <h2>Topluluğa katıl</h2>
+        <p>Güncellemeler, destek ve özel fırsatlar sizleri bekliyor.</p>
+        <div class="cta-perks">
+          <span>● Aktif topluluk</span>
+          <span>● Doğrudan teknik destek</span>
+          <span>● Özel kampanyalar</span>
+        </div>
+      </div>
+      <a href="https://discord.gg/7E5pbp4yWz" target="_blank" rel="noopener" class="btn btn-primary btn-discord cta-discord" data-discord data-i18n="joinCommunity">Şimdi Katıl →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="logo">
+          <img src="https://cdn.discordapp.com/attachments/1501791586822918205/1515327298633728140/sksbrqv.webp?ex=6a353185&is=6a33e005&hm=85f3569d9b701e004ae6544812da7b46665e96fc74d8eeecfa2c87e008dc59ef" alt="ExtasyStore Logo" class="logo-mark" style="width:30px;height:30px;border-radius:8px;object-fit:cover;background:#FF8C00;" />
+          ExtasyStore
+        </div>
+        <p class="foot-desc">Dijital lisanslar ve hesaplar için güvenilir kaynağınız. Anında teslimat, gerçek destek, düzenli güncellemeler. Kurumsal ve bireysel satışlar için profesyonel platform.</p>
+      </div>
+      <div>
+        <h4>Hızlı Bağlantılar</h4>
+        <ul>
+          <li><a href="#">Ana Sayfa</a></li>
+          <li><a href="#products">Ürünler</a></li>
+          <li><a href="#faq">SSS</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Yasal</h4>
+        <ul>
+          <li><a href="#">Kullanım Şartları</a></li>
+          <li><a href="#">Gizlilik Politikası</a></li>
+          <li><a href="#">İade Politikası</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 ExtasyStore. Tüm hakları saklıdır.</span>
+      <span></span>
+    </div>
+  </div>
+</footer>
+
+<script src="store-config.js"></script>
+<script src="products.js"></script>
+<script src="lang.js"></script>
+<script src="store.js"></script>
+<script>
+  const grid = document.getElementById('productGrid');
+  const favGrid = document.getElementById('favoritesGrid');
+  let currentCat = 'all';
+  let currentSort = 'featured';
+  let searchQuery = '';
+
+  function renderProducts(list){
+    grid.innerHTML = list.map(p => Store.productCardHtml(p)).join('');
+    Store.bindProductCards(grid);
+  }
+
+  function renderFavorites(){
+    const slugs = Store.getFavs();
+    const list = slugs.map(s => Store.getProduct(s)).filter(Boolean);
+    favGrid.innerHTML = list.length
+      ? list.map(p => Store.productCardHtml(p)).join('')
+      : `<p style="color:var(--text-dim);grid-column:1/-1;">${t('favorites')} — ♥ ile ürün ekleyin.</p>`;
+    Store.bindProductCards(favGrid);
+  }
+
+  function applyFilters(){
+    let list = Store.getProducts().filter(p => currentCat === 'all' || p.cat === currentCat);
+    if(searchQuery) list = Store.searchProducts(searchQuery).filter(p => currentCat === 'all' || p.cat === currentCat);
+    if(currentSort === 'asc') list = [...list].sort((a,b)=>a.price-b.price);
+    if(currentSort === 'desc') list = [...list].sort((a,b)=>b.price-a.price);
+    if(currentSort === 'new') list = [...list].sort((a,b)=> (b.badge==='new')-(a.badge==='new'));
+    renderProducts(list);
+    renderFavorites();
+    Store.renderCompareTable(document.getElementById('productCompareTable'));
+  }
+
+  window.onStoreSearch = function(q){
+    searchQuery = q;
+    applyFilters();
+  };
+
+  applyFilters();
+
+  document.getElementById('filterPills').addEventListener('click', e=>{
+    const btn = e.target.closest('.pill');
+    if(!btn) return;
+    document.querySelectorAll('#filterPills .pill').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    currentCat = btn.dataset.cat;
+    applyFilters();
+  });
+  document.getElementById('sortSelect').addEventListener('change', e=>{
+    currentSort = e.target.value;
+    applyFilters();
+  });
+
+  Store.init({ recentPurchases: true, activePage: 'home' });
+  window.refreshFavorites = renderFavorites;
+  Store.applySeo({
+    title: 'ExtasyStore — Dijital Ürün Mağazası',
+    desc: 'Dijital lisanslar anında teslim. FiveM, hesaplar, spoofers ve daha fazlası.',
+    url: location.href
+  });
+
+  // ---- Reviews marquee ----
+  const reviews = [
+    {name:"xNightRaven", item:"Tiago Private", text:"Executor temiz çalışıyor, günlerdir ban yok. Teslimat saniyeler içinde geldi."},
+    {name:"v4peGod_47", item:"Ham Executor", text:"AI script kısmı gerçekten işe yarıyor, menü düzgün ve hızlı açılıyor."},
+    {name:"pixel_dr1ft", item:"Eulen", text:"Premium fiyatına değer, stabilitesi piyasadaki birçok executordan daha iyi."},
+    {name:"ghostbyte99", item:"Fresh Rockstar", text:"Hesap sorunsuz giriş yaptı, bu fiyata fresh rockstar bulmak zor."},
+    {name:"z3roBan_", item:"Fresh Steam", text:"Steam hesabı anında geldi, mail bilgileri eksiksizdi. Ucuz ama iş görüyor."},
+    {name:"null_ptr_x", item:"Fresh Discord", text:"Discord hesabı doğrulanmış şekilde geldi, birkaç dakika içinde kullandım."},
+    {name:"lux3Run", item:"RedEngine 5M Privacy Protector", text:"Spoofer kurulumu kolaydı, HWID reset sonrası sorunsuz girdim."},
+    {name:"synapse.tr", item:"Ham Executor", text:"Kaynak dökümü ve olay araçlarını test ettim, beklediğimden stabil çalıştı."},
+    {name:"hexwave72", item:"Tiago Private", text:"Sıfır yakalanma iddiası abartı değil, private executor arayanlara tavsiye."},
+    {name:"coldstart_0x", item:"Fresh Rockstar", text:"Toplu aldım, hepsi aktifti. Otomatik teslimat gerçekten anında."},
+    {name:"rq_mainframe", item:"Eulen", text:"Uzun süredir duyduğum marka, buradan almak daha güvenli hissettirdi."},
+    {name:"darkpacket_", item:"RedEngine 5M Privacy Protector", text:"İndirimli fiyattan aldım, privacy protector beklentimi karşıladı."},
+    {name:"bytecrush3r", item:"Fresh Steam", text:"Fresh steam için şüpheliydim ama hesap çalışıyor, fiyat performans süper."},
+    {name:"neon_0verdrive", item:"Fresh Discord", text:"Token ve mail bilgisi düzgün geldi, destek de hızlı döndü."},
+    {name:"stack_overflowx", item:"Tiago Private", text:"Kurulum rehberi net, execte takılma veya crash yaşamadım."},
+  ];
+  function reviewCard(r){
+    return `<div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p>"${r.text}"</p>
+      <div class="review-who">
+        <div class="avatar">${r.name[0]}</div>
+        <div><div class="name">${r.name}</div><div class="item">${r.item}</div></div>
+      </div>
+    </div>`;
+  }
+  document.getElementById('trackA').innerHTML = (reviews.concat(reviews)).map(reviewCard).join('');
+  document.getElementById('trackB').innerHTML = (reviews.slice().reverse().concat(reviews.slice().reverse())).map(reviewCard).join('');
+
+  // ---- Compare slider ----
+  const wrap = document.getElementById('compareWrap');
+  const clip = document.getElementById('afterClip');
+  const handle = document.getElementById('compareHandle');
+  let dragging = false;
+  function setPos(clientX){
+    const rect = wrap.getBoundingClientRect();
+    let pct = ((clientX - rect.left) / rect.width) * 100;
+    pct = Math.max(0, Math.min(100, pct));
+    clip.style.width = pct + '%';
+    handle.style.left = pct + '%';
+  }
+  handle.addEventListener('mousedown', ()=> dragging = true);
+  window.addEventListener('mouseup', ()=> dragging = false);
+  window.addEventListener('mousemove', e=>{ if(dragging) setPos(e.clientX); });
+  handle.addEventListener('touchstart', ()=> dragging = true);
+  window.addEventListener('touchend', ()=> dragging = false);
+  window.addEventListener('touchmove', e=>{ if(dragging) setPos(e.touches[0].clientX); });
+
+  // ---- FAQ accordion ----
+  const faqs = [
+    {q:"Dijital teslimat nasıl çalışır?", a:"Satın alma onaylandıktan sonra ürün hesabına ve e-postana otomatik olarak gönderilir."},
+    {q:"Hangi ödeme yöntemleri kabul ediliyor?", a:"Kart, dijital cüzdan ve kripto para dahil birden fazla yöntemi destekliyoruz."},
+    {q:"Buradan satın almak güvenli mi?", a:"Tüm ödemeler şifrelenmiş, güvenilir sağlayıcılar üzerinden işlenir."},
+    {q:"Ürünüm çalışmazsa ne olur?", a:"Destek ekibimiz sorunu çözmek için seninle birlikte çalışır."},
+    {q:"İade alabilir miyim?", a:"İade koşulları ürün ve duruma göre değişir, iade politikamıza göz atabilirsin."},
+    {q:"Desteğe nasıl ulaşırım?", a:"Topluluk kanalımızdan veya destek formundan 7/24 ulaşabilirsin."},
+  ];
+  const faqList = document.getElementById('faqList');
+  faqList.innerHTML = faqs.map((f,i)=>`
+    <div class="faq-item" data-i="${i}">
+      <button class="faq-q">${f.q}<span class="chev">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">${f.a}</div></div>
+    </div>
+  `).join('');
+  faqList.addEventListener('click', e=>{
+    const btn = e.target.closest('.faq-q');
+    if(!btn) return;
+    const item = btn.closest('.faq-item');
+    const answer = item.querySelector('.faq-a');
+    const isOpen = item.classList.contains('open');
+    faqList.querySelectorAll('.faq-item').forEach(it=>{
+      it.classList.remove('open');
+      it.querySelector('.faq-a').style.maxHeight = null;
+    });
+    if(!isOpen){
+      item.classList.add('open');
+      answer.style.maxHeight = answer.scrollHeight + 'px';
+    }
+  });
+</script>
+</body>
+</html>
