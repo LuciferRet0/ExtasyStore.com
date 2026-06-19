@@ -65,7 +65,7 @@ function renderAdmin(){
         <label>metaDesc (SEO)</label><textarea name="metaDesc">${p.metaDesc||''}</textarea>
         <label>features (virgülle ayır)</label><input name="features" value="${(p.features||[]).join(', ')}" />
         <button type="submit" class="btn">${t('save')}</button>
-        <a href="Prototip 2.1.html" class="btn btn-ghost" style="display:inline-block;text-decoration:none;">← Mağaza</a>
+        <a href="index.html" class="btn btn-ghost" style="display:inline-block;text-decoration:none;">← Mağaza</a>
       </form>
     </div>`;
   root.querySelectorAll('.admin-list button[data-i]').forEach(btn => {

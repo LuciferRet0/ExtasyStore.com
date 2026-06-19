@@ -233,7 +233,7 @@ const Store = {
       </div>
       <div style="display:flex;gap:8px;">
         <button class="btn btn-ghost" id="clearCompare">Temizle</button>
-        <a href="Prototip 2.1.html#product-compare" class="btn btn-primary">${t("compare")}</a>
+        <a href="index.html#product-compare" class="btn btn-primary">${t("compare")}</a>
       </div>
     `;
     bar.querySelectorAll("[data-rm-compare]").forEach(btn => {
@@ -393,7 +393,7 @@ const Store = {
   },
 
   categoryUrl(cat) {
-    return `Prototip 2.1.html#products?cat=${cat}`;
+    return `index.html#products?cat=${cat}`;
   },
 
   /* ── Nav ── */
@@ -409,7 +409,7 @@ const Store = {
         <button type="button" class="lang-toggle" id="langToggle">${this.getLang().toUpperCase()}</button>
         <button type="button" class="theme-toggle" id="themeToggle">${this.getTheme() === "dark" ? "☀" : "☾"}</button>
         <a href="sepet.html" class="nav-icon-btn" title="${t("cart")}">🛒<span class="nav-badge" id="cartBadge">0</span></a>
-        <a href="Prototip 2.1.html#favorites" class="nav-icon-btn" title="${t("favorites")}">♥<span class="nav-badge" id="favBadge">0</span></a>
+        <a href="index.html#favorites" class="nav-icon-btn" title="${t("favorites")}">♥<span class="nav-badge" id="favBadge">0</span></a>
         <a href="admin.html" class="nav-icon-btn" title="${t("admin")}">⚙</a>
       </div>
     `;

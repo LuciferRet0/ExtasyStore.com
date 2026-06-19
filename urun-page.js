@@ -10,7 +10,7 @@ function renderProductPage() {
       <div class="not-found">
         <h1>Ürün bulunamadı</h1>
         <p>Aradığınız ilan mevcut değil veya kaldırılmış olabilir.</p>
-        <a href="Prototip 2.1.html#products" class="btn btn-primary">${t('goShop')} →</a>
+        <a href="index.html#products" class="btn btn-primary">${t('goShop')} →</a>
       </div>`;
     return;
   }
@@ -30,7 +30,7 @@ function renderProductPage() {
 
   root.innerHTML = `
     <nav class="breadcrumb" aria-label="Konum">
-      <a href="Prototip 2.1.html">${t('home')}</a><span>/</span>
+      <a href="index.html">${t('home')}</a><span>/</span>
       <a href="${Store.categoryUrl(product.cat)}">${t('products')}</a><span>/</span>
       <span>${product.name}</span>
     </nav>

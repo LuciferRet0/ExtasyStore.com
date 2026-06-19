@@ -25,7 +25,7 @@
 <header class="nav">
   <div class="wrap nav-shell">
     <div class="nav-inner">
-    <a href="Prototip 2.1.html" class="logo">ExtasyStore</a>
+    <a href="index.html" class="logo">ExtasyStore</a>
     <div class="nav-right"></div>
     </div>
     <div class="nav-tools" id="navTools"></div>
@@ -44,7 +44,7 @@ function renderCart(){
   const root = document.getElementById('cartRoot');
   const cart = Store.getCart();
   if(!cart.length){
-    root.innerHTML = `<p style="color:var(--text-dim);padding:40px 0;">${t('emptyCart')}</p><a href="Prototip 2.1.html#products" class="btn btn-primary">${t('goShop')}</a>`;
+    root.innerHTML = `<p style="color:var(--text-dim);padding:40px 0;">${t('emptyCart')}</p><a href="index.html#products" class="btn btn-primary">${t('goShop')}</a>`;
     return;
   }
   let sub = 0;
