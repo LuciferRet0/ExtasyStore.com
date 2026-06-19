@@ -87,8 +87,7 @@ const products = [
     features: ["Sıfır yakalanma odaklı yapı", "Düzenli güncelleme", "Anında lisans teslimi", "Kurulum rehberi dahil"],
     inStock: true,
     images: [
-      "https://tiagomodz.com/images/tiago_private.jpg",
-      "https://static.mysellauth.com/storage/images/797242.webp"
+      "https://tiagomodz.com/images/tiago_private.jpg"
     ],
     metaDesc: "Tiago Private — FiveM premium executor. Anında teslim, sıfır yakalanma odaklı.",
     faq: [
